@@ -1,0 +1,219 @@
+<script>
+function assert(cond, desc) {
+    desc = desc || '';
+    if (!cond) {
+        throw "ASSERTION ERROR (" + desc + ")";        
+    }
+    
+}
+</script>
+
+
+<script src="http://underscorejs.org/underscore.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>    
+<script src="model.js"></script>
+<script src="messenger.js"></script>
+<script src="core.js"></script>
+<script src="plugins.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="kangaroo.css">
+
+<script>
+
+//TODO: clean the code!!!
+// move some functions to the main core of the framework!
+// reconsider (and refactor) arguments passed to the Obj.send and to the event handlers
+
+
+// do more tests:
+// model
+// messenger
+// gameloop
+// run in many web-browsers, check compability!
+
+
+// do more features:
+// image loader/preloader
+// Finite State Machine, or some kind of Action Manager for objects
+// Box2D, FabricJS integration
+//
+
+kng.init();
+
+
+$(function() {
+    var objects = createObjects();
+    
+    env.world = kng.create('',{
+        events: {
+            create: function(model, plugin, aaa, msg) {
+                objects.push(kng.create(msg.obj.name, msg.obj));
+            
+            }
+        }        
+    });
+    
+    function iterate() {
+    
+        function updatePhysics(objects) {
+            invoke('move')('update');
+            checkCollisions(objects, com.send);
+        }
+
+        function invoke(msg) {
+            _.invoke(objects, 'send', msg);
+            return invoke;
+        }
+        
+        objects = objects.filter(function(o) {
+            return !o.model().dead;
+        });
+        
+        updatePhysics(objects);
+        com.dispatch();
+        
+        invoke('update')('render');    
+    }
+    
+    
+    setInterval(iterate, 20);
+
+
+    $(document).keydown(function() {
+        //com.send({to:kng.player, name:'keydown'});
+        com.send({to:'world', name:'create', obj: {
+                        name:'ball', model: {
+                            x:0,y:600,vy:-10,vx:5
+                        }
+                    }
+                });        
+    });
+    $(document).keyup(function() {
+    });
+    
+/*    $(document).on('click', function(e) {
+         alert(e.pageX + ', ' + e.pageY);
+    });*/
+    
+    
+    $(document).on('mousemove', function(e) {
+        var model = e.target && e.target.kngModel;
+        if (model) {
+            model(1).vx = model(1).vy = 0; 
+        }
+
+    });
+    $(document).on('click', function(e) {
+        var model = e.target && e.target.kngModel;
+        if (model) {
+            com.send({to:model.obj, name:'kill'});
+        }
+        else {
+
+            com.send({to:'world', name:'create', e:e, obj: {
+                name:'ball',
+                model: {
+                        targetx:e.pageX, targety:e.pageY
+                    }
+                }
+            });
+        }
+    });     
+    
+});
+
+var env = {};
+var com = new Messenger(function(id) {
+    if (_.isString(id))
+        return env[id];
+    return id;
+});
+
+
+
+kng.define('ball', {
+    plugins: [kng.DivRenderer],
+    events: {
+        collision: function(model, pluginData, send, msg) {
+            //model(1).dead = true;
+            
+            send({to:model.obj, name:'kill'});
+            //console.log(send);
+            send({to:'world', name:'create', obj: {
+                        name:'ball', model: {
+                            x:_.random(0,700),y:_.random(0,570),vy:2,vx:3
+                        }
+                    }});
+                
+        }, 
+        move: function(model) {
+            if (model().y>600 || model().y<0)  {
+                model(1).y -= model().vy*2;
+                model(1).vy *= -0.8;                
+            }
+            if (model().x>600 || model().x<0)  {
+                model(1).x -= model().vx*2;
+                model(1).vx *= -0.8;                
+            }
+        }
+    }
+}, 'spr');
+
+function createObjects() {
+    var objects = [];
+    _.times(2, function() {
+        var model = {x:_.random(0,800), y:_.random(0,600), vx:Math.random()*3-1,
+                        vy: - Math.random()*6};                    
+        objects.push(kng.create('ball', {  model: model   }));
+    });
+    kng.player = objects[0];
+    
+    
+    return objects;
+}
+
+
+
+function checkCollisions(objects, send) {
+    for (var i = 0; i < objects.length - 1; i++) {
+        var a = objects[i];
+        var am = a.model;
+        for (var j = i+1; j < objects.length; j++) {
+            var b = objects[j];
+            var bm = b.model;
+            var ax = am().x + am().vx;
+            var bx = bm().x + bm().vx;
+            var ay = am().y + am().vy;
+            var by = bm().y + bm().vy;                    
+            
+            var dx = ax - bx;
+            var dy = ay - by;
+            
+            if (dx * dx + dy * dy < 50*50) {
+                //am.modify({vx:am().vx/55, vy:am().vy/55});
+                //bm.modify({vx:bm().vx/55, vy:bm().vy/55});                        
+                am(1).vx /= 55;
+                am(1).vy /= 55;                
+                bm(1).vx /= 55;
+                bm(1).vy /= 55;                
+                
+                a.send({name:'collision', collider:b}, send);
+                b.send({name:'collision', collider:a}, send);                
+
+                //a.send('collision');
+            }
+
+        }           
+    }
+}        
+
+
+    
+
+
+
+
+
+</script>
+<script src="debug.js"></script>

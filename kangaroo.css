@@ -1,0 +1,22 @@
+.sprite {
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  left:0px;
+  top:0px;
+  position:absolute;
+  comment_transition:0.1s all;
+  background:#cef;
+}
+
+.blue {
+  background:blue;
+}
+
+.red {
+  background:red;
+}
+
+body {
+  background:black;
+}
