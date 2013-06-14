@@ -1,4 +1,4 @@
-<script>
+<script >
 function assert(cond, desc) {
     desc = desc || '';
     if (!cond) {
@@ -6,6 +6,7 @@ function assert(cond, desc) {
     }
     
 }
+
 </script>
 
 
@@ -13,8 +14,12 @@ function assert(cond, desc) {
 <script src="http://code.jquery.com/jquery.js"></script>    
 <script src="model.js"></script>
 <script src="messenger.js"></script>
+<script src="container.js"></script>
+
 <script src="core.js"></script>
 <script src="plugins.js"></script>
+
+<script src="domview.js"></script>
 
 
 <link rel="stylesheet" type="text/css" href="kangaroo.css">
@@ -42,14 +47,22 @@ function assert(cond, desc) {
 kng.init();
 
 
+
+
+
+var view = new DOMView;
+
+
+
 $(function() {
     var objects = createObjects();
     
     env.world = kng.create('',{
         events: {
             create: function(model, plugin, aaa, msg) {
-                objects.push(kng.create(msg.obj.name, msg.obj));
-            
+                var obj = kng.create(msg.obj.name, msg.obj);
+                objects.push(obj);
+                view.add(obj.model);
             }
         }        
     });
@@ -72,8 +85,9 @@ $(function() {
         
         updatePhysics(objects);
         com.dispatch();
+        view.render();
         
-        invoke('update')('render');    
+        invoke('update');    
     }
     
     
@@ -133,7 +147,6 @@ var com = new Messenger(function(id) {
 
 
 kng.define('ball', {
-    plugins: [kng.DivRenderer],
     events: {
         collision: function(model, pluginData, send, msg) {
             //model(1).dead = true;

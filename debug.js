@@ -1,4 +1,3 @@
-
 kng.define('byt', {
     model: {
         istnieje:true

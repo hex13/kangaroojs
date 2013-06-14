@@ -95,7 +95,7 @@ kng.init = function() {
     kng.define('spr', {
         model: {
           x: 400, y:100, vx:0,  vy:0, w:50, h:50,  opacity:1 , /*targetx:100, targety:100,*/
-        }, plugins: [kng.PhysicsPlugin, kng.TargetPlugin, kng.DivRenderer],
+        }, plugins: [kng.PhysicsPlugin, kng.TargetPlugin],
         events: {            
             update: function(model) {
                 model.update();
