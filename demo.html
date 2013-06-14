@@ -20,6 +20,7 @@ function assert(cond, desc) {
 <script src="plugins.js"></script>
 
 <script src="domview.js"></script>
+<script src="simplephysics.js"></script>
 
 
 <link rel="stylesheet" type="text/css" href="kangaroo.css">
@@ -48,61 +49,15 @@ kng.init();
 
 
 
-
-
 var view = new DOMView;
-
-
-
-function SimplePhysics() {
-    this.update = function() {        
-        this.send('move');
-        this.send('update');
-        this._checkCollisions();    
-        this.send('update');        
-    }    
-    
-    this._checkCollisions = function () {
-        var objects = this.objects;
-        for (var i = 0; i < objects.length - 1; i++) {
-            var a = objects[i].model.obj;
-            var am = a.model;
-            for (var j = i+1; j < objects.length; j++) {
-                var b = objects[j].model.obj;
-                var bm = b.model;
-                if (am().dead || bm().dead) continue;                
-                var ax = am().x + am().vx;
-                var bx = bm().x + bm().vx;
-                var ay = am().y + am().vy;
-                var by = bm().y + bm().vy;                    
-                
-                var dx = ax - bx;
-                var dy = ay - by;
-                
-                if (dx * dx + dy * dy < 50*50) {
-                    am(1).vx /= 55;
-                    am(1).vy /= 55;                
-                    bm(1).vx /= 55;
-                    bm(1).vy /= 55;                
-                    
-                    a.send({name:'collision', collider:b}, kng.send);
-                    b.send({name:'collision', collider:a}, kng.send);
-                }
-
-            }           
-        }
-    };        
-
-    
-}
-SimplePhysics.prototype = new Container();
-
 var physics = new SimplePhysics;
+
+
+
 
 
 $(function() {
     var objects = createObjects();
-    
     env.world = kng.create('',{
         events: {
             create: function(model, plugin, aaa, msg) {
@@ -116,29 +71,17 @@ $(function() {
             }
         }        
     });
-    
-    function iterate() {
-    
-        function updatePhysics(objects) {
-            invoke('move')('update');
-            checkCollisions(objects, com.send);
-        }
+            
 
-        function invoke(msg) {
-            _.invoke(objects, 'send', msg);
-            return invoke;
-        }
-        
+    function iterate() {
         objects = objects.filter(function(o) {
             return !o.model().dead;
         });
         
-        //updatePhysics(objects);
         physics.update();
         com.dispatch();
         view.render();
-        
-        //invoke('update');    
+
     }
     
     
@@ -146,7 +89,6 @@ $(function() {
 
 
     $(document).keydown(function() {
-        //com.send({to:kng.player, name:'keydown'});
         com.send({to:'world', name:'create', obj: {
                         name:'ball', model: {
                             x:0,y:600,vy:-10,vx:5
@@ -154,12 +96,9 @@ $(function() {
                     }
                 });        
     });
+    
     $(document).keyup(function() {
     });
-    
-/*    $(document).on('click', function(e) {
-         alert(e.pageX + ', ' + e.pageY);
-    });*/
     
     
     $(document).on('mousemove', function(e) {
@@ -207,7 +146,7 @@ kng.define('ball', {
             
             send({to:model.obj, name:'kill'});
             //console.log(send);
-            0 && send({to:'world', name:'create', obj: {
+            send({to:'world', name:'create', obj: {
                         name:'ball', model: {
                             x:_.random(0,700),y:_.random(0,570),vy:2,vx:3
                         }
@@ -241,42 +180,6 @@ function createObjects() {
 }
 
 
-
-function checkCollisions(objects, send) {
-    for (var i = 0; i < objects.length - 1; i++) {
-        var a = objects[i];
-        var am = a.model;
-        for (var j = i+1; j < objects.length; j++) {
-            var b = objects[j];
-            var bm = b.model;
-            var ax = am().x + am().vx;
-            var bx = bm().x + bm().vx;
-            var ay = am().y + am().vy;
-            var by = bm().y + bm().vy;                    
-            
-            var dx = ax - bx;
-            var dy = ay - by;
-            
-            if (dx * dx + dy * dy < 50*50) {
-                //am.modify({vx:am().vx/55, vy:am().vy/55});
-                //bm.modify({vx:bm().vx/55, vy:bm().vy/55});                        
-                am(1).vx /= 55;
-                am(1).vy /= 55;                
-                bm(1).vx /= 55;
-                bm(1).vy /= 55;                
-                
-                a.send({name:'collision', collider:b}, com.send);
-                b.send({name:'collision', collider:a}, com.send);                
-
-                //a.send('collision');
-            }
-
-        }           
-    }
-}        
-
-
-    
 
 
 
