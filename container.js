@@ -1,8 +1,25 @@
+var log = _.once(function(s) {
+    console.log(s);
+});
 
+function Container(functionNames) {
+    var objects = this.objects = [];
+    
+    var self = this;
 
-
-function Container() {
-    this.objects = [];
+    if (functionNames) 
+        for (var i = 0; i < functionNames.length; i++) {
+            var name = functionNames[i];
+            var onEvent = 'on' + name.charAt(0).toUpperCase() + name.slice(1);            
+            self[name] = function() {
+                var handler = this[onEvent];
+                if (handler)
+                    this.objects.forEach(handler.bind(this));
+            }            
+        }
+    
+    
+    
 }
 
 Container.prototype = {
@@ -24,6 +41,8 @@ Container.prototype = {
 
     }
 };
+
+//-------------------
 
 function ContainerTest() {
     console.log('Container Test started');
