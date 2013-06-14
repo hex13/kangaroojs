@@ -1,9 +1,5 @@
-var log = _.once(function(s) {
-    console.log(s);
-});
-
 function Container(functionNames) {
-    var objects = this.objects = [];
+    this.objects = [];
     
     var self = this;
 
@@ -17,9 +13,6 @@ function Container(functionNames) {
                     this.objects.forEach(handler.bind(this));
             }            
         }
-    
-    
-    
 }
 
 Container.prototype = {
@@ -39,6 +32,20 @@ Container.prototype = {
                 return data;
             }
 
+    },
+    
+    each: function(func) {
+        var self = this;
+        this.objects.forEach(function(data) {
+            func.call(self, data);
+        });    
+    },
+    
+    send: function(msg) {
+        this.each(function(data) {
+            var obj = data.model.obj;
+            obj.send(msg);
+        });
     }
 };
 

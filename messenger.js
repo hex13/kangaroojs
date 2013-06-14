@@ -1,9 +1,11 @@
 function Messenger(locateObject) {
     var buffer = [];
+    var send;
+    
     function dispatchOne(msg) {
         var obj = locateObject? locateObject(msg.to) : msg.to;
         if (obj) 
-            obj.send(msg, this.send);    
+            obj.send(msg, send);    
     }
     this.send = function(msg) {
         if (msg.immediate)
@@ -19,4 +21,6 @@ function Messenger(locateObject) {
     this.dispatch = function() {
         this.receive().forEach(dispatchOne);
     } 
+    
+    send = this.send;
 }

@@ -100,8 +100,9 @@ kng.init = function() {
             update: function(model) {
                 model.update();
             },
-            kill: function(model) {
-                model(1).dead = true;
+            kill: function(model, plugin, send) {
+                model(1).dead = true;              
+                send({to:'world', name:'destroy', obj:model.obj});
             }
         }
     });
