@@ -90,7 +90,7 @@ var physics = new SimplePhysics;
 $(function() {
     var objects = [];
 
-    env.world = kng.create('',{
+    env.scene = kng.create('',{
         events: {
             create: function(model, plugin, aaa, msg) {
                 var obj = kng.create(msg.obj.name, msg.obj);
@@ -116,7 +116,7 @@ $(function() {
         }
     });
     
-       com.send({to:'world', name:'create', obj: {name:'UnderscoreTemplate', 
+       com.send({to:'scene', name:'create', obj: {name:'UnderscoreTemplate', 
             model: {
                 state:'showPoints', 
                 x:400, y:100, vx:0, vy:0, game:env.game.model(), template: '<%=game.points %>',
@@ -133,12 +133,19 @@ $(function() {
                 showPoints: {
                     move: function(model) {
                         model(1).template =  'punkty <%=game.points %>';
+                    },
+                    click: function() {
+                        alert('kliknąłeś na punkty. teraz będzie data!');
                     }
                 },
                 showDate: {
                     move: function(model) {
                         model(1).template = new Date() + '';
+                    },
+                    click: function() {
+                        alert('kliknąłeś na datę. teraz będą punkty!');
                     }
+                    
                 }
                 
             }
@@ -162,7 +169,7 @@ $(function() {
 
 
     $(document).keydown(function() {
-        com.send({to:'world', name:'create', obj: {
+        com.send({to:'scene', name:'create', obj: {
                         name:'ball', model: {
                             x:0,y:600,vy:-10,vx:5
                         }
@@ -196,7 +203,7 @@ $(function() {
         }
         else {
 
-            com.send({to:'world', name:'create', e:e, obj: {
+            com.send({to:'scene', name:'create', e:e, obj: {
                 name:'ball',
                 model: {
                         targetx:e.pageX, targety:e.pageY
@@ -229,7 +236,7 @@ kng.define('ball', {
             
             send({to:model.obj, name:'kill'});
             //console.log(send);
-            send({to:'world', name:'create', obj: {
+            send({to:'scene', name:'create', obj: {
                         name:'ball', model: {
                             x:_.random(0,700),y:_.random(0,570),vy:2,vx:3
                         }

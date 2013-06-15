@@ -10,7 +10,7 @@ kng.defineTypes = function(kng) {
             },
             kill: function(model, plugin, send) {
                 model(1).dead = true;              
-                send({to:'world', name:'destroy', obj:model.obj});
+                send({to:'scene', name:'destroy', obj:model.obj});
             }
         }
     });
