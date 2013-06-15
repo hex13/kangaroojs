@@ -13,7 +13,7 @@ function DOMView() {
         if(typeof model.opacity!='undefined')
             style.opacity = model.opacity;        
             
-        if(model.text) {
+        if(typeof model.text != 'undefined') {
             el.innerHTML = model.text;
         }    
     }

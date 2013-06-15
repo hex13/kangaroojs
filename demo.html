@@ -20,6 +20,7 @@ function assert(cond, desc) {
 <script src="container.js"></script>
 
 <script src="core.js"></script>
+<script src="types.js"></script>
 <script src="plugins.js"></script>
 
 <script src="domview.js"></script>
@@ -86,9 +87,8 @@ var physics = new SimplePhysics;
 
 
 
-
 $(function() {
-    var objects = createObjects();
+    var objects = [];
 
     env.world = kng.create('',{
         events: {
@@ -125,7 +125,6 @@ $(function() {
         com.dispatch();
         view.render();
         document.title = env.game.model().points + ' punktów';
-
     }
     
     
@@ -141,8 +140,9 @@ $(function() {
                 });     
        com.send({to:'game', name:'points', points:1});   
        
-       com.send({to:'world', name:'create', obj: {name:'ball', 
-            model: {x:400, y:100, vx:0, vy:0, text:'kotek', gravity:2}
+       com.send({to:'world', name:'create', obj: {name:'UnderscoreTemplate', 
+            model: {x:400, y:100, vx:0, vy:0, template: 'hej, tu kotek na <%=x %>, <%=y %>',
+            text:'kotek', gravity:0.1}
        }});
     });
     
@@ -188,6 +188,8 @@ kng.send = function(msg) {
 
 
 
+
+
 kng.define('ball', {
     events: {
         collision: function(model, pluginData, send, msg) {
@@ -214,24 +216,6 @@ kng.define('ball', {
         }
     }
 }, 'spr');
-
-function createObjects() {
-    var objects = [];
-    _.times(2, function() {
-        var model = {x:_.random(0,800), y:_.random(0,600), vx:Math.random()*3-1,
-                        vy: - Math.random()*6};                    
-        objects.push(kng.create('ball', {  model: model   }));
-    });
-    kng.player = objects[0];
-    
-
-    
-    return objects;
-}
-
-
-
-
 
 
 

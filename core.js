@@ -92,21 +92,8 @@ kng.Obj.prototype = {
 //TODO: remove test values for x, y, w, h
 // w and h should be correct width/height of the object (taken from sprite width/height))   
 kng.init = function() {
-    kng.define('spr', {
-        model: {
-          x: 400, y:100, vx:0,  vy:0, w:50, h:50,  opacity:1 , /*targetx:100, targety:100,*/
-          gravity: 1
-        }, plugins: [kng.PhysicsPlugin, kng.TargetPlugin],
-        events: {            
-            update: function(model) {
-                model.update();
-            },
-            kill: function(model, plugin, send) {
-                model(1).dead = true;              
-                send({to:'world', name:'destroy', obj:model.obj});
-            }
-        }
-    });
+
+    kng.defineTypes(kng);
     
 }
 
