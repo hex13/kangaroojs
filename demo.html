@@ -93,7 +93,7 @@ $(function() {
     env.scene = kng.create('',{
         events: {
             create: function(model, plugin, aaa, msg) {
-                var obj = kng.create(msg.obj.name, msg.obj);
+                var obj = kng.create(msg.obj.name, msg.obj, this);
                 objects.push(obj);
                 view.add(obj.model);
                 physics.add(obj.model);
@@ -231,18 +231,16 @@ kng.send = function(msg) {
 
 kng.define('ball', {
     events: {
-        collision: function(model, pluginData, send, msg) {
-            //model(1).dead = true;
-            
-            send({to:model.obj, name:'kill'});
-            //console.log(send);
-            send({to:'scene', name:'create', obj: {
-                        name:'ball', model: {
-                            x:_.random(0,700),y:_.random(0,570),vy:2,vx:3
-                        }
-                    }});
-            send({to:'game', name:'points', points:1});
-                
+        collision: function(model, pluginData, doFollowing, msg) {
+            doFollowing.
+                killYourself().
+                points(1).                
+                create('ball', {
+                    x:_.random(0,700),
+                    y:_.random(0,570),
+                    vy:2,
+                    vx:3
+                });
         }, 
         move: function(model) {
             if (model().y>600 || model().y<0)  {

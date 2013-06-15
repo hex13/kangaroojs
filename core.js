@@ -54,36 +54,80 @@ kng.define = function(name, definition, ancestor) {
 }
 
 // create object of type 'name'
-kng.create = function(name, properties) {
+kng.create = function(name, properties, scene) {
     var obj = new kng.Obj(kng.define('', properties || {}, name));
+    obj.scene = scene;
     return obj;
 }
 
 // constructor of Obj - don't call directly
-kng.Obj = function(attrs) {      
+kng.Obj = function(attrs) { 
+    var self = this;     
     _.extend(this, attrs);    
     this.plugins.data = []; 
     this.options = this.options || {};    
     if (!this.options.linkModel) //!!!TODO: test this feature
         this.model = kng.createModel(this.model, this);
+
+    this.$do = function(func) {
+        var $do = function(msg) {
+           if (msg.to == 'scene') {
+                msg.to = self.scene;
+           }
+           func(msg);
+           return this;
+        };
+        
+        $do.send = $do; ///!!TODO: test this feature        
+        /*$do.create = function(obj) {
+            var msg = {to:'scene', name:'create', obj:obj};
+            func(msg);
+        }*/
+
+        $do.create = function(name, model) {
+            var msg = {to:'scene', name:'create', obj:{
+                name:name,
+                model:model
+            }};
+            func(msg);
+            return this;            
+        }
+        $do.killYourself = function() {
+            func({to:self, name:'kill'});
+            return this;
+        }
+        $do.points = function(amount) {
+            func({to:'game', name:'points', points:amount});
+            return this;
+        }
+        
+        
+        return $do;
+    }
+
     
     this.send('init');
     //!!! ^ przy usuwaniu/dodawaniu pluginow trzeba bedzie jednoczesnie uaktualniac tablice danych
+    
+    
 }
 
 
 kng.Obj.prototype = {   
-    send: function (msg, lets) {
+    send: function (msg, sendFunc) {
+        var self = this;
+            
         var msgName = msg.name || msg;
         var model = this.model;
         var plugins = this.plugins;
         var state = this.states && this.states[model().state];
 
+        var $do = this.$do(sendFunc);
         function _call(obj, index, list) {
             var handler = obj[msgName] || (obj.events && obj.events[msgName]);
             var data = !list? null : kng.utils.getOrCreate(list.data, index, {});
             if (handler)
-                handler(model, data, lets, msg);
+                handler.call(self, model, data, $do, msg);
         }       
         
        
