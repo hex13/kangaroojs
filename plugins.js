@@ -5,7 +5,7 @@ kng.PhysicsPlugin = {
             var nm = model(1);
             nm.x += m.vx;
             nm.y += m.vy;
-            nm.vy += kng.GRAVITY;
+            nm.vy += kng.GRAVITY * m.gravity;
             //model.modify({x: '+vx', y: '+vy', vy:'+0.1'});            
         }
     }

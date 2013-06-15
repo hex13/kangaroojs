@@ -1,8 +1,9 @@
 function DOMView() {
-    var self = this;
+   
     this.onRender = function(data) {
         var style = data.style;            
-        model = data.model();
+        var el = data.el;
+        model = data.model();        
         style.left = ~~(model.x) + 'px';
         style.top =  ~~(model.y + 10) + 'px';  
         if (model.dead) {
@@ -11,7 +12,12 @@ function DOMView() {
         }
         if(typeof model.opacity!='undefined')
             style.opacity = model.opacity;        
+            
+        if(model.text) {
+            el.innerHTML = model.text;
+        }    
     }
+
     this.onAdd = function(data) {
         var el = data.el = document.createElement('div');             
         data.style = el.style;
@@ -20,11 +26,12 @@ function DOMView() {
         document.body.appendChild(el);
         el.kngModel = data.model;
     };
-    console.log(this.onRender);
-    console.log(this.render);
-    console.log('XX');            
 };
 DOMView.prototype = new Container(['render']);
+
+
+
+
 
 function DOMViewTest() {
     /*var view = new DOMView;

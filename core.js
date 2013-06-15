@@ -16,7 +16,7 @@ _.extend(kng, {
         }
     },
 
-    GRAVITY: 0.01,
+    GRAVITY: 0.1,
     input: {},    
     modules: {},
     types: {},
@@ -95,6 +95,7 @@ kng.init = function() {
     kng.define('spr', {
         model: {
           x: 400, y:100, vx:0,  vy:0, w:50, h:50,  opacity:1 , /*targetx:100, targety:100,*/
+          gravity: 1
         }, plugins: [kng.PhysicsPlugin, kng.TargetPlugin],
         events: {            
             update: function(model) {
