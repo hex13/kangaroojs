@@ -28,7 +28,7 @@ Container.prototype = {
         for (var i = 0, len = objects.length; i < len; i++) 
             if (objects[i].model == model) {
                 var data = objects.splice(i, 1);
-                this.onRemove && this.onRemove(data);                                
+                this.onRemove && this.onRemove(data[0]);                                
                 return data;
             }
 

@@ -16,6 +16,13 @@ function DOMView() {
         if(typeof model.text != 'undefined') {
             el.innerHTML = model.text;
         }    
+        
+        if(!model.collidable) {
+            style.border = '2px solid gray';
+            style.opacity = 0.7;
+        }
+        
+        
     }
 
     this.onAdd = function(data) {
@@ -26,6 +33,11 @@ function DOMView() {
         document.body.appendChild(el);
         el.kngModel = data.model;
     };
+    
+    this.onRemove = function(data) {
+        var el = data.el;
+        el.parentNode.removeChild(el);
+    }
 };
 DOMView.prototype = new Container(['render']);
 

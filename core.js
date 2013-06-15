@@ -60,7 +60,9 @@ kng.create = function(name, properties) {
 kng.Obj = function(attrs) {      
     _.extend(this, attrs);    
     this.plugins.data = []; 
-    this.model = kng.createModel(this.model, this);
+    this.options = this.options || {};    
+    if (!this.options.linkModel) //!!!TODO: test this feature
+        this.model = kng.createModel(this.model, this);
     
     this.send('init');
     //!!! ^ przy usuwaniu/dodawaniu pluginow trzeba bedzie jednoczesnie uaktualniac tablice danych
