@@ -117,8 +117,31 @@ $(function() {
     });
     
        com.send({to:'world', name:'create', obj: {name:'UnderscoreTemplate', 
-            model: {x:400, y:100, vx:0, vy:0, game:env.game.model(), template: '<%=game.points %>',
-            text:'kotek', gravity:-0.0, collidable:false}, options: {linkModel:false}
+            model: {
+                state:'showPoints', 
+                x:400, y:100, vx:0, vy:0, game:env.game.model(), template: '<%=game.points %>',
+                text:'kotek', gravity:-0.0, collidable:false
+            }, 
+            options: {linkModel:false},
+            events: {
+                click: function(model) {
+                    var state = model().state;                    
+                    model(1).state = state=='showDate'?'showPoints':'showDate';
+                }
+            },
+            states: {
+                showPoints: {
+                    move: function(model) {
+                        model(1).template =  'punkty <%=game.points %>';
+                    }
+                },
+                showDate: {
+                    move: function(model) {
+                        model(1).template = new Date() + '';
+                    }
+                }
+                
+            }
        }});       
     
             
@@ -169,7 +192,7 @@ $(function() {
     $(document).on('click', function(e) {
         var model = e.target && e.target.kngModel;
         if (model) {
-            com.send({to:model.obj, name:'kill'});
+            com.send({to:model.obj, name:'click'});
         }
         else {
 
@@ -211,6 +234,7 @@ kng.define('ball', {
                             x:_.random(0,700),y:_.random(0,570),vy:2,vx:3
                         }
                     }});
+            send({to:'game', name:'points', points:1});
                 
         }, 
         move: function(model) {

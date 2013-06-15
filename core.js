@@ -38,6 +38,9 @@ kng.define = function(name, definition, ancestor) {
     type.model = _.extend(_.clone(ancestor.model || {}), definition.model || {});    
     type.plugins = (ancestor.plugins || []).concat(definition.plugins || []);
     
+    //!!!TODO: test this features (inheritance of states)
+    type.states = _.extend(_.clone(ancestor.states || {}), definition.states || {});
+    
     type.plugins = type.plugins.filter(function(elem, index, arr) {
         return arr.lastIndexOf(elem) === index;
     });
@@ -74,8 +77,10 @@ kng.Obj.prototype = {
         var msgName = msg.name || msg;
         var model = this.model;
         var plugins = this.plugins;
+        var state = this.states && this.states[model().state];
+
         function _call(obj, index, list) {
-            var handler = obj.events[msgName];
+            var handler = obj[msgName] || (obj.events && obj.events[msgName]);
             var data = !list? null : kng.utils.getOrCreate(list.data, index, {});
             if (handler)
                 handler(model, data, lets, msg);
@@ -83,7 +88,8 @@ kng.Obj.prototype = {
         
        
         this.plugins.forEach(_call);
-        _call(this);                                    
+        _call(this);      
+        if (state) _call(state);                              
     }
 };
 
