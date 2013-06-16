@@ -88,9 +88,14 @@ var physics = new SimplePhysics;
 
 kng.define('scene',{
         events: {
-            init: function(model, plugin) {
-                this.physics = new SimplePhysics;
+            init: function(model, plugin, aaa, msg) {
                 this.observers = [];
+
+                if (model().physics) {
+                    this.physics = model().physics;//
+                    this.send({name:'addObserver', observer:this.physics});                    
+                }
+
             },
             
             addObserver: function(model, plugin, aaa, msg) {
@@ -101,13 +106,11 @@ kng.define('scene',{
                 var obj = kng.create(msg.obj.name, msg.obj, this);
                 this.observers.forEach(function(observer) {
                     observer.add(obj.model);
-                });
-                this.physics.add(obj.model);
+                });                
             },
             
             destroy: function(model, plugin, aaa, msg) {                
                 var objModel = msg.obj.model;
-                this.physics.remove(objModel);
                 this.observers.forEach(function(observer) {
                     observer.remove(objModel);
                 });
@@ -115,10 +118,10 @@ kng.define('scene',{
             },
             
             move: function() {
-                this.physics.update();
+                this.physics && this.physics.update();
             }
         }        
-    });
+});
 
 
 
@@ -136,8 +139,16 @@ kng.define('scene',{
 $(function() {
 
 
-    env.scene = kng.create('scene');
-    env.scene2 = kng.create('scene');    
+    env.scene = kng.create('scene', { 
+        model: {
+            physics: new SimplePhysics
+        }
+    });
+    env.scene2 = kng.create('scene', { 
+        model: {
+            physics: new SimplePhysics
+        }
+    });    
     
     env.game = kng.create('', {
         model: {
