@@ -1,12 +1,13 @@
 function SimplePhysics() {
-    this.update = function() {        
+    var physics = new Container();
+    physics.update = function() {        
         this.send('move');
         this.send('update');
         this._checkCollisions();    
         this.send('update');        
     }    
     
-    this._checkCollisions = function () {
+    physics._checkCollisions = function () {
         var objects = this.objects;
         for (var i = 0; i < objects.length - 1; i++) {
             var a = objects[i].model.obj;
@@ -37,6 +38,7 @@ function SimplePhysics() {
 
             }           
         }
-    };        
+    };     
+    return physics;   
 }
-SimplePhysics.prototype = new Container();
+
