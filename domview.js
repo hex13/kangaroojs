@@ -6,6 +6,7 @@ function DOMView() {
         model = data.model();        
         style.left = ~~(model.x) + 'px';
         style.top =  ~~(model.y + 10) + 'px';  
+
         if (model.dead) {
             style.background = "rgba(" + _.random(50,100) +",0,0,0.7)";
             style.zIndex = '-10';
@@ -29,7 +30,7 @@ function DOMView() {
         var el = data.el = document.createElement('div');             
         data.style = el.style;
         el.className = 'sprite';             
-        data.style.backgroundColor = '#fa0';
+        data.style.backgroundColor = data.model().color;
         document.body.appendChild(el);
         el.kngModel = data.model;
     };
