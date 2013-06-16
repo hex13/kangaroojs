@@ -86,11 +86,7 @@ var physics = new SimplePhysics;
 
 
 
-
-$(function() {
-
-
-    env.scene = kng.create('',{
+kng.define('scene',{
         events: {
             init: function(model, plugin) {
                 this.physics = new SimplePhysics;
@@ -123,6 +119,25 @@ $(function() {
             }
         }        
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(function() {
+
+
+    env.scene = kng.create('scene');
+    env.scene2 = kng.create('scene');    
     
     env.game = kng.create('', {
         model: {
@@ -171,11 +186,13 @@ $(function() {
        }});       
     
       env.scene.send({name:'addObserver', observer:view});
+      env.scene2.send({name:'addObserver', observer:view});      
 
     function iterate() {
 
         
         com.send({to:'scene', name:'move'});
+        com.send({to:'scene2', name:'move'});
         
         com.dispatch();
         view.render();
@@ -186,8 +203,10 @@ $(function() {
     setInterval(iterate, 20);
 
 
-    $(document).keydown(function() {
-        com.send({to:'scene', name:'create', obj: {
+    $(document).keydown(function(e) {
+        if (e.keyCode!=13 && e.keyCode!=32) return;
+        var scene = e.keyCode==13?'scene':'scene2';
+        com.send({to:scene, name:'create', obj: {
                         name:'ball', model: {
                             x:0,y:600,vy:-10,vx:5
                         }
