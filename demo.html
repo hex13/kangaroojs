@@ -86,43 +86,6 @@ var physics = new SimplePhysics;
 
 
 
-kng.define('scene',{
-        events: {
-            init: function(model, plugin, aaa, msg) {
-                this.observers = [];
-
-                if (model().physics) {
-                    this.physics = model().physics;//
-                    this.send({name:'addObserver', observer:this.physics});                    
-                }
-
-            },
-            
-            addObserver: function(model, plugin, aaa, msg) {
-                this.observers.push(msg.observer);
-            },
-            
-            create: function(model, plugin, aaa, msg) {
-                var obj = kng.create(msg.obj.name, msg.obj, this);
-                this.observers.forEach(function(observer) {
-                    observer.add(obj.model);
-                });                
-            },
-            
-            destroy: function(model, plugin, aaa, msg) {                
-                var objModel = msg.obj.model;
-                this.observers.forEach(function(observer) {
-                    observer.remove(objModel);
-                });
-
-            },
-            
-            move: function() {
-                this.physics && this.physics.update();
-            }
-        }        
-});
-
 
 
 
