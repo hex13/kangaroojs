@@ -1,13 +1,37 @@
 kangaroojs
 ==========
 
-KangarooJS (JavaScript game message-driven microframework)
+KangarooJS (JavaScript message-driven game microframework)
+Version 0.01 (early stages of development) 
 
-still in development.
+now:
 
 - each game entity is extendable via plugins
 - message/event-driven approach
-- code that draws entities on the screen is decoupled from the game logic. You can easily swap renderer without affecting rest of the game.
+- decoupled modules (renderer, physics engine etc.): you can swap them without affecting the rest of the game.
+- pseudoclassical hierarchy of entities - you can derive behaviours and attributes 
+
+planned (NOT YET implemented):
+
+- screen stack
+- level loading
+- support for UI (HTML based dialogs), in-game texts
+- graphic theme for casual games (stars, padlocks, level list etc.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
