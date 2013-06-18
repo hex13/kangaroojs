@@ -45,6 +45,34 @@ function assert(cond, desc) {
 
 <script>
 
+//18.06.2013
+// 
+// move movement (x+=vx, y+=vy) code from physics plugin to file simplephysics.js
+// don't change model (don't send update message), but let physics module try 
+// 1. move all objects (x = x + vx, y = y + vy
+// 2. after movement - check for collisions
+//      3. add collision flag to the model, eg.:
+//                if (collision) 
+//                     model().wasCollision = true;
+// 4. loop on objects, 
+//        if there was no collision: let nx = x, ny = y
+//        else:  nx = nx, ny = ny (no change, no movement)
+// 5. send update message
+//
+// pressupositions: nx, ny are not modified by plugins
+
+// box2d version
+// 1. update velocity of box2d object assigned with each of the kangaroo game objects
+// 2. update box2d (step)
+// 3. get position x, y from box2d objects, assign to nx, ny
+// 4. send update message
+// 4.5 - send move message? (to do some custom things after movement)
+// 5. there's no need for collision detection nor move explicitly objects (nx = x + vx is not necessary)
+//
+
+
+
+
 //14.06.2013 
 //!!TODO:
 // handle various types of object (eg. graphicType = 'text', graphicType = 'image'
