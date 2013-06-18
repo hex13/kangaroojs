@@ -13,7 +13,7 @@ function DOMView() {
             style.background = "rgba(" + _.random(50,100) +",0,0,0.7)";
             style.zIndex = '-10';
         }
-        if(typeof model.opacity!='undefined' && model.opacity != null)
+        if(typeof model.opacity!='undefined' && model.opacity !== null)
             style.opacity = model.opacity;        
             
         if((typeof model.text != 'undefined') &&  el.innerHTML != model.text
@@ -28,13 +28,19 @@ function DOMView() {
         if(model.fadeOut) {
             $(el).fadeOut(model.fadeOut);
             newModel.fadeOut = 0;
-        }
-        
+        }        
         
         if(model.blink) {
             $(el).fadeOut(~~(model.blink/2)).fadeIn(~~(model.blink/2));
             newModel.blink = 0;
         }
+        
+        if(model.popup) {
+            $(el).animate({opacity:1},model.popup[0]).fadeOut(model.popup[1]);
+            newModel.opacity = null;
+            newModel.popup = null;
+        }
+        
         
         
     }
