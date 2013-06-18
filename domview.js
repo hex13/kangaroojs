@@ -29,7 +29,11 @@ function DOMView() {
     this.onAdd = function(data) {
         var el = data.el = document.createElement('div');             
         data.style = el.style;
-        el.className = 'sprite';             
+        
+        
+        var className = data.model.obj.className;
+        el.className = className;
+        
         data.style.backgroundColor = data.model().color;
         document.body.appendChild(el);
         el.kngModel = data.model;

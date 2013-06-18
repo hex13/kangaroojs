@@ -1,17 +1,21 @@
-.sprite {
-  width:50px;
-  height:50px;
-  border-radius:50%;
+.kang-visual {
   left:0px;
   top:0px;
   position:absolute;
-  comment_transition:0.1s all;
-  background:#cef;
   
   
   font-size:20px;
   color:white;
   font-weight:bold;
+  
+}
+
+.kang-spr {
+  min-width:50px;
+  min-height:50px;  
+  border-radius:50%;
+  background:#cef;
+  
 }
 
 .blue {
@@ -25,3 +29,13 @@
 body {
   background:black;
 }
+
+#templates {
+    display:none;
+}
+
+.kang-dialog {
+  background:rgba(255,255,255,0.4);
+}
+
+

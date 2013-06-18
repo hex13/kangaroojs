@@ -1,8 +1,8 @@
 kng.defineTypes = function(kng) {
-    kng.define('spr', {
+    kng.define('visual', {
         model: {
           x: 400, y:100, vx:0,  vy:0, w:50, h:50,  opacity:1 , /*targetx:100, targety:100,*/
-          gravity: 1, collidable: true
+          gravity: 0, collidable: false
         }, plugins: [kng.PhysicsPlugin, kng.TargetPlugin],
         events: {            
             update: function(model) {
@@ -12,8 +12,15 @@ kng.defineTypes = function(kng) {
                 model(1).dead = true;              
                 send({to:'scene', name:'destroy', obj:model.obj});
             }
-        }
+        }    
     });
+    
+    kng.define('spr', {
+        model: {
+            gravity: 1, collidable: true
+        }
+
+    },'visual');
 
 
     kng.define('UnderscoreTemplate', {
@@ -26,7 +33,7 @@ kng.defineTypes = function(kng) {
                 model(1).text = _.template(model().template)(model());
             }
         }
-    },'spr');
+    },'visual');
     
     
 

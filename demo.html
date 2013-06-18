@@ -27,6 +27,20 @@ function assert(cond, desc) {
 <script src="simplephysics.js"></script>
 
 
+<div id="templates">
+
+    <div id="welcome">
+        <div class="kang-dialog">
+
+        <h3>Welcome</h3>
+
+        <p>Good morning and welcome to the KangarooJS game microframework</p>
+
+        </div>
+    </div>
+
+</div>
+
 <link rel="stylesheet" type="text/css" href="kangaroo.css">
 
 <script>
@@ -45,10 +59,6 @@ function assert(cond, desc) {
 
 // make also possibility of creating object with link to the previously existing model 
 // so that many objects could use the same model (for example Hud Object could use Game Model for display Hud, in the same time, Game Model would be owned by the Game Object)
-
-// maybe change 'world' for the 'scene' and make some abstract scene object to further use
-// in various contexts, maybe for example HUD would have its own scene, ang game entities would also have their own one.
-
 
 // let's make many sprites at once: kng.create('10x10 * sprite', { ....});
 // or special function: kng.createMany({width:10, height:10, layout:'grid'}, 'sprite', { ....});
@@ -83,20 +93,6 @@ kng.init();
 
 var view = new DOMView;
 var physics = new SimplePhysics;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 $(function() {
@@ -162,23 +158,26 @@ $(function() {
       env.scene.send({name:'addObserver', observer:view});
       env.scene2.send({name:'addObserver', observer:view});      
 
-    function iterate() {
-
-        
-        com.send({to:'scene', name:'move'});
-        com.send({to:'scene2', name:'move'});
-        
-        com.dispatch();
-        view.render();
-        document.title = env.game.model().points + ' punktów';
-    }
-    
-    
-    setInterval(iterate, 20);
 
 
     $(document).keydown(function(e) {
+    
         if (e.keyCode!=13 && e.keyCode!=32) return;
+        
+        com.send({to:'scene', name:'create', obj: { 
+            name:'UnderscoreTemplate', 
+            model: {template:$("#welcome").html(),
+                    x:100, y:100
+                    },
+            events: {
+                click: function(model, plugin, aaa, msg) {
+                    alert(msg);
+                }
+            }
+        }});
+        
+        
+        
         var scene = e.keyCode==13?'scene':'scene2';
         com.send({to:scene, name:'create', obj: {
                         name:'ball', model: {
@@ -188,17 +187,9 @@ $(function() {
                 });     
        com.send({to:'game', name:'points', points:1});   
        
-       /*com.send({to:'world', name:'create', obj: {name:'UnderscoreTemplate', 
-            model: {x:400, y:100, vx:0, vy:0, template: 'hej, tu kotek na <%=x %>, <%=y %>',
-            text:'kotek', gravity:0.1}
-       }});*/
-       
-       
     });
     
-    $(document).keyup(function() {
-    });
-    
+  
     
     $(document).on('mousemove', function(e) {
         var model = e.target && e.target.kngModel;
@@ -208,7 +199,13 @@ $(function() {
 
     });
     $(document).on('click', function(e) {
-        var model = e.target && e.target.kngModel;
+        var target = $(e.target).closest('.kang-visual'); 
+        alert(target.length);
+        target.fadeOut();
+        if (!target.length)
+            return;
+            
+        var model = target[0].kngModel;//e.target && e.target.kngModel;
         if (model) {
             com.send({to:model.obj, name:'click'});
         }
@@ -222,7 +219,22 @@ $(function() {
                 }
             });
         }
-    });     
+    });    
+    
+    function iterate() {
+
+        
+        com.send({to:'scene', name:'move'});
+        com.send({to:'scene2', name:'move'});
+        
+        com.dispatch();
+        view.render();
+    }
+    
+    
+    setInterval(iterate, 20);
+    
+     
     
 });
 

@@ -34,6 +34,13 @@ kng.define = function(name, definition, ancestor) {
     
     var type = {};
     
+    type.classes = (ancestor.classes || []).concat(name);
+    type.className = _.map(type.classes, function(c) {
+                    return 'kang-' + c;
+    }).join(' ');            
+    
+
+    
     type.events = _.extend(_.clone(ancestor.events || {}), definition.events || {});
     type.model = _.extend(_.clone(ancestor.model || {}), definition.model || {});    
     type.plugins = (ancestor.plugins || []).concat(definition.plugins || []);
