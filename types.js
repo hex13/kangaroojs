@@ -30,7 +30,8 @@ kng.defineTypes = function(kng) {
         },
         events: {
             move: function(model) {         
-                model(1).text = _.template(model().template)(model());
+                var text = _.template(model().template)(model());
+                model(1).text = text;
             }
         }
     },'visual');

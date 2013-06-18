@@ -4,6 +4,7 @@ function DOMView() {
         var style = data.style;            
         var el = data.el;
         model = data.model();        
+        var oldModel = data.model(-1);
         style.left = ~~(model.x) + 'px';
         style.top =  ~~(model.y + 10) + 'px';  
 
@@ -14,13 +15,13 @@ function DOMView() {
         if(typeof model.opacity!='undefined')
             style.opacity = model.opacity;        
             
-        if(typeof model.text != 'undefined') {
+        if((typeof model.text != 'undefined') &&  el.innerHTML != model.text
+            /*&& oldModel.text != model.text*/) {
             el.innerHTML = model.text;
         }    
         
         if(!model.collidable) {
             style.border = '2px solid gray';
-            style.opacity = 0.7;
         }
         
         
