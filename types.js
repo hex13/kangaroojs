@@ -1,7 +1,7 @@
 kng.defineTypes = function(kng) {
     kng.define('visual', {
         model: {
-          x: 400, y:100, vx:0,  vy:0, w:50, h:50,  opacity:1 , /*targetx:100, targety:100,*/
+          x: 400, y:100, vx:0,  vy:0, w:50, h:50,  /*targetx:100, targety:100,*/
           gravity: 0, collidable: false
         }, plugins: [kng.PhysicsPlugin, kng.TargetPlugin],
         events: {            

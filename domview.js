@@ -5,6 +5,7 @@ function DOMView() {
         var el = data.el;
         model = data.model();        
         var oldModel = data.model(-1);
+        var newModel = data.model(1);
         style.left = ~~(model.x) + 'px';
         style.top =  ~~(model.y + 10) + 'px';  
 
@@ -12,7 +13,7 @@ function DOMView() {
             style.background = "rgba(" + _.random(50,100) +",0,0,0.7)";
             style.zIndex = '-10';
         }
-        if(typeof model.opacity!='undefined')
+        if(typeof model.opacity!='undefined' && model.opacity != null)
             style.opacity = model.opacity;        
             
         if((typeof model.text != 'undefined') &&  el.innerHTML != model.text
@@ -22,6 +23,17 @@ function DOMView() {
         
         if(!model.collidable) {
             style.border = '2px solid gray';
+        }
+        
+        if(model.fadeOut) {
+            $(el).fadeOut(model.fadeOut);
+            newModel.fadeOut = 0;
+        }
+        
+        
+        if(model.blink) {
+            $(el).fadeOut(~~(model.blink/2)).fadeIn(~~(model.blink/2));
+            newModel.blink = 0;
         }
         
         

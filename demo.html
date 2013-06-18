@@ -167,11 +167,13 @@ $(function() {
         com.send({to:'scene', name:'create', obj: { 
             name:'UnderscoreTemplate', 
             model: {template:$("#welcome").html(),
-                    x:100, y:100
+                    x:100, y:400
                     },
             events: {
                 click: function(model, plugin, aaa, msg) {
-                    model(1).opacity = 0.2;
+                    //model(1).opacity = 0.2;
+                    //model(1).fadeOut = 1000;
+                    model(1).blink = 300;
                 }
             }
         }});
@@ -200,7 +202,7 @@ $(function() {
     });
     $(document).on('click', function(e) {
         var target = $(e.target).closest('.kang-visual'); 
-        
+
         if (!target.length)
             return;
             
