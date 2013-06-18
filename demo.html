@@ -45,6 +45,10 @@ function assert(cond, desc) {
 
 <script>
 
+//TODO:
+// check if there is a bug - do objects from different scenes collide?
+// or they are created in the same scene instead of two different?
+
 //18.06.2013
 // 
 // move movement (x+=vx, y+=vy) code from physics plugin to file simplephysics.js
@@ -284,7 +288,7 @@ kng.send = function(msg) {
 kng.define('ball', {
     events: {
         init: function(model) {
-            model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
+            //model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
         },
         collision: function(model, pluginData, doFollowing, msg) {
             doFollowing.

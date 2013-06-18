@@ -2,6 +2,16 @@ function SimplePhysics() {
     var physics = new Container();
     physics.update = function() {        
         this.send('move');
+
+        this.objects.forEach(function(data) {
+            var m = data.model();
+            var nm = data.model(1);
+            nm.x += m.vx;
+            nm.y += m.vy;
+            nm.vy += kng.GRAVITY * m.gravity;
+        });
+            //model.modify({x: '+vx', y: '+vy', vy:'+0.1'});              
+        
         this.send('update');
         this._checkCollisions();    
         this.send('update');        

@@ -92,7 +92,9 @@ kng.Obj = function(attrs) {
         }*/
 
         $do.create = function(name, model) {
-            var msg = {to:'scene', name:'create', obj:{
+            //!!!TODO: fix 'incorrect scene' bug
+            // should be eg. to:self.scene, but in this case 'self.scene' must be a correct scene object
+            var msg = {to:self.scene, name:'create', obj:{
                 name:name,
                 model:model
             }};

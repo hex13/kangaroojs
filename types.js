@@ -3,7 +3,7 @@ kng.defineTypes = function(kng) {
         model: {
           x: 400, y:100, vx:0,  vy:0, w:50, h:50,  /*targetx:100, targety:100,*/
           gravity: 0, collidable: false
-        }, plugins: [kng.PhysicsPlugin, kng.TargetPlugin],
+        }, plugins: [kng.TargetPlugin],
         events: {            
             update: function(model) {
                 model.update();
@@ -48,6 +48,7 @@ kng.defineTypes = function(kng) {
                         this.send({name:'addObserver', observer:this.physics});                    
                     }
 
+                    this.color = ['red','green','blue','yellow','orange'][_.random(4)];//!!!!DEBUG
                 },
                 
                 addObserver: function(model, plugin, aaa, msg) {
@@ -55,6 +56,7 @@ kng.defineTypes = function(kng) {
                 },
                 
                 create: function(model, plugin, aaa, msg) {
+                    msg.obj.model.color = this.color;//!!!DEBUG                
                     var obj = kng.create(msg.obj.name, msg.obj, this);
                     this.observers.forEach(function(observer) {
                         observer.add(obj.model);
