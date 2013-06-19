@@ -1,7 +1,7 @@
 function SimplePhysics() {
     var physics = new Container();
     physics.update = function() {        
-        this.send('move');
+
 
         this.objects.forEach(function(data) {
             var m = data.model();
@@ -9,12 +9,29 @@ function SimplePhysics() {
             nm.x += m.vx;
             nm.y += m.vy;
             nm.vy += kng.GRAVITY * m.gravity;
+            
+            if (nm.y > 600 || nm.y<0) nm.vy *= -1;
+            if (nm.x > 1000 || nm.x<0) nm.vx *= -1;            
         });
-            //model.modify({x: '+vx', y: '+vy', vy:'+0.1'});              
         
-        this.send('update');
         this._checkCollisions();    
-        this.send('update');        
+        
+        this.objects.forEach(function(data) {
+            var m = data.model(1);        
+            var nm = data.model(1);
+            if (nm.wasCollision) {
+                nm.vx *= 0;
+                nm.vy *= 0;
+                nm.x = m.x;
+                nm.y = m.y;                
+              // nm.wasCollision = false;
+            }
+        });
+        this.send('update');   
+
+        
+      // this.send('move');       
+       // this.send('update');                 
     }    
     
     physics._checkCollisions = function () {
@@ -28,23 +45,27 @@ function SimplePhysics() {
                 var bm = b.model;
                 var bm0 = b.model();                
                 if (am0.dead || bm0.dead || !am0.collidable || !bm0.collidable) continue;                
-                var ax = am().x + am().vx;
-                var bx = bm().x + bm().vx;
-                var ay = am().y + am().vy;
-                var by = bm().y + bm().vy;                    
+                
+                if (am0.wasCollision) am(1).wasCollision = false;
+                if (bm0.wasCollision) bm(1).wasCollision = false;                
+                
+                if(am0.wasCollision || bm0.wasCollision) continue;
+                var ax = am(1).x;
+                var bx = bm(1).x; 
+                var ay = am(1).y;
+                var by = bm(1).y;
                 
                 var dx = ax - bx;
                 var dy = ay - by;
                 
                 if (dx * dx + dy * dy < 50*50) {
-                    am(1).vx /= 55;
-                    am(1).vy /= 55;                
-                    bm(1).vx /= 55;
-                    bm(1).vy /= 55;                
-                    
+                
+                    am(1).wasCollision = true;  
+                    bm(1).wasCollision = true;       
+                    console.log('kolizja');             
                     a.send({name:'collision', collider:b}, kng.send);
-                    b.send({name:'collision', collider:a}, kng.send);
-                }
+                   // b.send({name:'collision', collider:a}, kng.send);
+                } 
 
             }           
         }

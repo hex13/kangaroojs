@@ -3,6 +3,7 @@ function Messenger(locateObject) {
     var send;
     
     function dispatchOne(msg) {
+        if(msg.name!='move')console.log(msg.name);
         var obj = locateObject? locateObject(msg.to) : msg.to;
         if (obj) 
             obj.send(msg, send);    
