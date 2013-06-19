@@ -54,3 +54,13 @@ kng.TargetPlugin = {
     }
 };
 
+// to use with scene object
+kng.ShapePlugin = function(shape) {
+    return {
+        events: {
+            create: function(model, plugin, aaa, msg) {
+                msg.obj.model.shape = shape;
+            }
+        }
+    }    
+}

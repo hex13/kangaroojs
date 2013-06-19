@@ -56,6 +56,9 @@ function DOMView() {
         data.style.backgroundColor = data.model().color;
         document.body.appendChild(el);
         el.kngModel = data.model;
+        
+        if (data.model().shape == 'circle')
+            data.style.borderRadius = '50%';
     };
     
     this.onRemove = function(data) {

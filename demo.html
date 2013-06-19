@@ -138,7 +138,9 @@ $(function() {
     env.scene2 = kng.create('scene', { 
         model: {
             physics: new SimplePhysics
-        }
+        }, plugins: [
+            kng.ShapePlugin('circle')
+        ]
     });    
     
     env.game = kng.create('', {
@@ -215,7 +217,8 @@ $(function() {
         var scene = e.keyCode==13?'scene':'scene2';
         com.send({to:scene, name:'create', obj: {
                         name:'ball', model: {
-                            x:0,y:600,vy:-10,vx:5
+                            x:0,y:600,vy:-10,vx:5,
+                            shape:e.keyCode==13?'circle':'rect'
                         }
                     }
                 });     

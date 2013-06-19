@@ -1,3 +1,9 @@
+//!!!
+// notice: poor quality of code (TODO: improve in further versions)
+// when to change x, y ? and when nx, ny?
+// what to do when collision?
+// is wasCollision variable solution correct?
+
 function SimplePhysics() {
     var physics = new Container();
     physics.update = function() {        
