@@ -10,8 +10,8 @@ function SimplePhysics() {
             nm.y += m.vy;
             nm.vy += kng.GRAVITY * m.gravity;
             
-            if (nm.y > 600 || nm.y<0) nm.vy *= -1;
-            if (nm.x > 1000 || nm.x<0) nm.vx *= -1;            
+            if (nm.y > 600 || nm.y<0) {nm.vy *= -1; nm.y+=nm.vy}
+            if (nm.x > 1000 || nm.x<0) {nm.vx *= -1; nm.x+=nm.vx};
         });
         
         this._checkCollisions();    
@@ -30,8 +30,8 @@ function SimplePhysics() {
         this.send('update');   
 
         
-      // this.send('move');       
-       // this.send('update');                 
+         this.send('move');       
+        this.send('update');                 
     }    
     
     physics._checkCollisions = function () {
@@ -64,7 +64,7 @@ function SimplePhysics() {
                     bm(1).wasCollision = true;       
                     console.log('kolizja');             
                     a.send({name:'collision', collider:b}, kng.send);
-                   // b.send({name:'collision', collider:a}, kng.send);
+                    b.send({name:'collision', collider:a}, kng.send);
                 } 
 
             }           
