@@ -1,9 +1,9 @@
 kng.defineTypes = function(kng) {
     kng.define('visual', {
         model: {
-          x: 400, y:100, vx:0,  vy:0, w:50, h:50,  /*targetx:100, targety:100,*/
+          x: 400, y:100, vx:0,  vy:0, w:60, h:60,  /*targetx:100, targety:100,*/
           rotation:0,
-          gravity: 0, collidable: false
+          gravity: 0, collidable: false, shape:'rect',
         }, plugins: [kng.TargetPlugin],
         events: {            
             update: function(model) {
@@ -60,6 +60,7 @@ kng.defineTypes = function(kng) {
                     console.log('dodaje' + this.physics);
                     msg.obj.model.color = this.color;//!!!DEBUG                
                     var obj = kng.create(msg.obj.name, msg.obj, this);
+                    console.log(obj.model().shape);
                     this.observers.forEach(function(observer) {
                         observer.add(obj.model);
                     });                

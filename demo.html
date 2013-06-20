@@ -15,6 +15,8 @@ function assert(cond, desc) {
 
 <script src="http://underscorejs.org/underscore.js"></script>
 <script src="http://code.jquery.com/jquery.js"></script>    
+<script src="box2d/Box2dWeb-2.1a.3/Box2dWeb-2.1.a.3.min.js"></script>
+
 <script src="model.js"></script>
 <script src="messenger.js"></script>
 <script src="container.js"></script>
@@ -25,6 +27,7 @@ function assert(cond, desc) {
 
 <script src="domview.js"></script>
 <script src="simplephysics.js"></script>
+<script src="box2dphysics.js"></script>
 
 
 <div id="templates">
@@ -132,8 +135,10 @@ $(function() {
 
     env.scene = kng.create('scene', { 
         model: {
-            physics: new SimplePhysics
-        }
+            physics: new Box2DPhysics
+        }, plugins: [
+           // kng.ShapePlugin('circle')
+        ]
     });
     env.scene2 = kng.create('scene', { 
         model: {
@@ -156,7 +161,7 @@ $(function() {
     
        com.send({to:'scene', name:'create', obj: {name:'UnderscoreTemplate', 
             model: {
-                state:'showPoints', 
+                state:'showPoints', w:300, h:100,
                 x:400, y:100, vx:0, vy:0, game:env.game.model(), template: '<%=game.points %>',
                 text:'kotek', gravity:-0.0, collidable:false
             }, 
@@ -193,12 +198,31 @@ $(function() {
       env.scene2.send({name:'addObserver', observer:view});      
 
 
+      com.send({to:'scene', name:'create', obj: {
+                        name:'ball', model: {
+                            x:200,y:400,vy:-10,vx:5,w:300,h:10,
+                            gravity:0,
+                            shape:'rect',
+                            rotation:0
+                        }}});
+                        
+      com.send({to:'scene', name:'create', obj: {
+                        name:'ball', model: {
+                            x:200,y:100,vy:-10,vx:5,h:300,w:10,
+                            gravity:0,
+                            shape:'rect',
+                            rotation:0
+                        }}});                        
+
+
+
+
 
     $(document).keydown(function(e) {
     
         if (e.keyCode!=13 && e.keyCode!=32) return;
         
-        com.send({to:'scene', name:'create', obj: { 
+        com.send({to:'scene2', name:'create', obj: { 
             name:'UnderscoreTemplate', 
             model: {template:$("#welcome").html(),
                     x:100, y:400, opacity:0, popup:[2000,400]
@@ -217,8 +241,14 @@ $(function() {
         var scene = e.keyCode==13?'scene':'scene2';
         com.send({to:scene, name:'create', obj: {
                         name:'ball', model: {
-                            x:0,y:600,vy:-10,vx:5,
-                            shape:e.keyCode==13?'circle':'rect'
+                            x:200,y:200,vy:-10,vx:5,
+                            shape:e.keyCode==13?'circle':'rect',
+                            rotation:0
+                        },
+                        events: {
+                            move:function(model) {
+                               // model(1).rotation+=1;
+                            }
                         }
                     }
                 });     
@@ -238,10 +268,10 @@ $(function() {
     $(document).on('click', function(e) {
         var target = $(e.target).closest('.kang-visual'); 
 
-        if (!target.length)
-            return;
+        //if (!target.length)
+        //    return;
             
-        var model = target[0].kngModel;//e.target && e.target.kngModel;
+        var model = target && target[0] && target[0].kngModel;//e.target && e.target.kngModel;
         if (model) {
             com.send({to:model.obj, name:'click'});
         }
@@ -250,7 +280,7 @@ $(function() {
             com.send({to:'scene', name:'create', e:e, obj: {
                 name:'ball',
                 model: {
-                        targetx:e.pageX, targety:e.pageY
+                        x:e.pageX, y:e.pageY
                     }
                 }
             });
@@ -269,7 +299,7 @@ $(function() {
     }
     
     
-    setInterval(iterate, 20);
+    setInterval(iterate, 16);
     
      
     
@@ -293,6 +323,9 @@ kng.define('ball', {
     events: {
         init: function(model) {
             //model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
+        },
+        click: function(model, pluginData, $do, msg) {
+            $do.killYourself();
         },
         collision: function(model, pluginData, doFollowing, msg) {
             doFollowing.
@@ -321,4 +354,6 @@ kng.define('ball', {
 
 
 </script>
+<div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>
+<canvas width=800 height=600 style="__display:none;margin-left:-3px;margin-top:14px;padding:0;background:#666" id="canvas"></canvas>
 <script src="debug.js"></script>

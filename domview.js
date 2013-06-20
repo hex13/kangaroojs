@@ -8,9 +8,12 @@ function DOMView() {
         var newModel = data.model(1);
         style.left = ~~(model.x) + 'px';
         style.top =  ~~(model.y + 10) + 'px';  
+        
+        style.width = model.w + 'px'; //!!!doesn't should take w/h from images?
+        style.height = model.h + 'px';
 
         if (model.dead) {
-            style.background = "rgba(" + _.random(50,100) +",0,0,0.7)";
+            style.backgroundColor = "rgba(" + _.random(50,100) +",0,0,0.7)";
             style.zIndex = '-10';
         }
         if(typeof model.opacity!='undefined' && model.opacity !== null)
