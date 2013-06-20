@@ -3,7 +3,7 @@ kangaroojs
 
 KangarooJS is message-driven game microframework written in JavaScript
 
-Version 0.1
+Version 0.2 dev
 
 now:
 
@@ -13,12 +13,18 @@ now:
 - pseudoclassical hierarchy of entities - you can derive behaviours and attributes 
 - support for UI: HTML based dialogs, in-game texts
 
-planned (NOT YET implemented):
+partly:
 
 - box2d integration
+
+planned (NOT YET implemented):
+
+- image preloader
 - level loading
 - screen stack
+- canvas support
 - graphic theme for casual games (stars, padlocks, level list etc.)
+
 
 
 
