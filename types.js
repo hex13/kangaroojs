@@ -2,6 +2,7 @@ kng.defineTypes = function(kng) {
     kng.define('visual', {
         model: {
           x: 400, y:100, vx:0,  vy:0, w:50, h:50,  /*targetx:100, targety:100,*/
+          rotation:0,
           gravity: 0, collidable: false
         }, plugins: [kng.TargetPlugin],
         events: {            
@@ -56,6 +57,7 @@ kng.defineTypes = function(kng) {
                 },
                 
                 create: function(model, plugin, aaa, msg) {
+                    console.log('dodaje' + this.physics);
                     msg.obj.model.color = this.color;//!!!DEBUG                
                     var obj = kng.create(msg.obj.name, msg.obj, this);
                     this.observers.forEach(function(observer) {
