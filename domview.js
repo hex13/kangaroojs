@@ -21,6 +21,12 @@ function DOMView() {
             el.innerHTML = model.text;
         }    
         
+        var vendorStylePrefix = 'Webkit';//!!TODO: do support for others browsers than webkit
+        var transform = '';
+        if (typeof model.rotation != 'undefined')
+            transform += 'rotate(' + model.rotation  +  'deg)';
+        style[vendorStylePrefix + 'Transform'] = transform;
+        
         if(!model.collidable) {
             style.border = '2px solid gray';
         }
@@ -40,6 +46,8 @@ function DOMView() {
             newModel.opacity = null;
             newModel.popup = null;
         }
+        
+
         
         
         
