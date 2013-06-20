@@ -56,14 +56,21 @@ kng.defineTypes = function(kng) {
                     this.observers.push(msg.observer);
                 },
                 
+                load: function(model, plugin, $do, msg) {
+                },                
+                
                 create: function(model, plugin, aaa, msg) {
-                    console.log('dodaje' + this.physics);
-                    msg.obj.model.color = this.color;//!!!DEBUG                
-                    var obj = kng.create(msg.obj.name, msg.obj, this);
-                    console.log(obj.model().shape);
-                    this.observers.forEach(function(observer) {
-                        observer.add(obj.model);
-                    });                
+                
+                    var objData = msg.obj;
+                    var self = this;
+                    (_.isArray(objData)?objData:[objData]).forEach(function(objData) {
+                        objData.model.color = self.color;//!!!DEBUG                
+                        var obj = kng.create(objData.name, objData, self);
+                        console.log(obj.model().shape);
+                        self.observers.forEach(function(observer) {
+                            observer.add(obj.model);
+                        });                
+                    });
                 },
                 
                 destroy: function(model, plugin, aaa, msg) {                

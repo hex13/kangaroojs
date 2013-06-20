@@ -198,21 +198,24 @@ $(function() {
       env.scene2.send({name:'addObserver', observer:view});      
 
 
-      com.send({to:'scene', name:'create', obj: {
-                        name:'ball', model: {
+      com.send({to:'scene', name:'create', 
+                obj:[{
+                        name:'ball', 
+                        model: {
                             x:200,y:400,vy:-10,vx:5,w:300,h:10,
                             gravity:0,
                             shape:'rect',
                             rotation:0
-                        }}});
-                        
-      com.send({to:'scene', name:'create', obj: {
-                        name:'ball', model: {
+                        }
+                },  {
+                        name:'ball', 
+                        model: {
                             x:200,y:100,vy:-10,vx:5,h:300,w:10,
                             gravity:0,
                             shape:'rect',
                             rotation:0
-                        }}});                        
+                        }
+                    }]});                        
 
 
 
