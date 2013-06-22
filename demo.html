@@ -126,11 +126,12 @@ kng.init();
 
 
 
-var view = new DOMView;
 var physics = new SimplePhysics;
 
 
 $(function() {
+    var view = new DOMView(document.body, 1);
+    var minimap = new DOMView($("#minimap")[0], .2);
 
 
     env.scene = kng.create('scene', { 
@@ -195,6 +196,8 @@ $(function() {
        }});       
     
     env.scene.send({name:'addObserver', observer:view});
+    env.scene.send({name:'addObserver', observer:minimap});    
+    
     env.scene2.send({name:'addObserver', observer:view});      
 
 
@@ -271,27 +274,7 @@ $(function() {
         }
 
     });
-   /* $(document).on('click', function(e) {
-        var target = $(e.target).closest('.kang-visual'); 
 
-        //if (!target.length)
-        //    return;
-            
-        var model = target && target[0] && target[0].kngModel;//e.target && e.target.kngModel;
-        if (model) {
-            com.send({to:model.obj, name:'click'});
-        }
-        else {
-
-            com.send({to:'scene', name:'create', e:e, obj: {
-                name:'ball',
-                model: {
-                        x:e.pageX, y:e.pageY
-                    }
-                }
-            });
-        }
-    });    */
     
     function iterate() {
 
@@ -302,6 +285,7 @@ $(function() {
 
         com.dispatch();        
         view.render();
+        minimap.render();
     }
     
     
@@ -360,6 +344,7 @@ kng.define('ball', {
 
 
 </script>
+<div id="minimap" style="position:fixed;width:400px;right:0px"></div>
 <div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>
 <canvas width=800 height=600 style="__display:none;margin-left:-3px;margin-top:14px;padding:0;background:#666" id="canvas"></canvas>
 <script src="debug.js"></script>

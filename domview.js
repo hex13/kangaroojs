@@ -1,6 +1,12 @@
-function DOMView() {
-    var element = document.body;
-    var view = this;
+function DOMView(element, pixelsPerUnit) {
+
+    element = element || document.body;
+    var view = new Container(['render']);
+    view.pixelsPerUnit = pixelsPerUnit || 1;    
+    
+    console.log('DOMVIEW');    
+    console.log(view);
+    view.abc = 1209;
     $(element).on('click', function(e) {
         var x = e.pageX / view.pixelsPerUnit;
         var y = e.pageY / view.pixelsPerUnit;        
@@ -27,11 +33,11 @@ function DOMView() {
         
     });
     
-    this.pixelsPerUnit = 1;
-   var d = 0.001;
-    this.onRender = function(data) {
+
+   var d = Math.random()*0.01;
+    view.onRender = function(data) {
         var ppu = this.pixelsPerUnit;
-        this.pixelsPerUnit += d;
+        //this.pixelsPerUnit += d;
         if (this.pixelsPerUnit>3 || this.pixelsPerUnit<0.5) d*=-1;
         
         var style = data.style;            
@@ -89,7 +95,7 @@ function DOMView() {
         
     }
 
-    this.onAdd = function(data) {
+    view.onAdd = function(data) {
         var el = data.el = document.createElement('div');             
         data.style = el.style;
         
@@ -105,12 +111,14 @@ function DOMView() {
             data.style.borderRadius = '50%';
     };
     
-    this.onRemove = function(data) {
+    view.onRemove = function(data) {
         var el = data.el;
         el.parentNode.removeChild(el);
     }
+    
+    return view;
 };
-DOMView.prototype = new Container(['render']);
+
 
 
 
