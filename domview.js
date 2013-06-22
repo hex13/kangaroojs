@@ -1,16 +1,49 @@
 function DOMView() {
-   
+    var element = document.body;
+    var view = this;
+    $(element).on('click', function(e) {
+        var x = e.pageX / view.pixelsPerUnit;
+        var y = e.pageY / view.pixelsPerUnit;        
+        
+        var target = $(e.target).closest('.kang-visual');         
+
+        var model = target && target[0] && target[0].kngModel;//e.target && e.target.kngModel;
+        if (model) {
+            kng.send({to:model.obj, name:'click'});
+        }
+        else {
+            kng.send({to:'scene', name:'create', e:e, obj: {
+                name:'ball',
+                model: {
+                        x:x, y:y
+                    }
+                }
+            });
+        }        
+        
+        
+        
+        
+        
+    });
+    
+    this.pixelsPerUnit = 1;
+   var d = 0.001;
     this.onRender = function(data) {
+        var ppu = this.pixelsPerUnit;
+        this.pixelsPerUnit += d;
+        if (this.pixelsPerUnit>3 || this.pixelsPerUnit<0.5) d*=-1;
+        
         var style = data.style;            
         var el = data.el;
         model = data.model();        
         var oldModel = data.model(-1);
         var newModel = data.model(1);
-        style.left = ~~(model.x) + 'px';
-        style.top =  ~~(model.y + 10) + 'px';  
+        style.left = ~~(model.x * ppu) + 'px';
+        style.top =  ~~(model.y * ppu + 10) + 'px';  
         
-        style.width = model.w + 'px'; //!!!doesn't should take w/h from images?
-        style.height = model.h + 'px';
+        style.width = (model.w * ppu) + 'px'; //!!!doesn't should take w/h from images?
+        style.height = (model.h * ppu) + 'px';
 
         if (model.dead) {
             style.backgroundColor = "rgba(" + _.random(50,100) +",0,0,0.7)";
@@ -65,7 +98,7 @@ function DOMView() {
         el.className = className;
         
         data.style.backgroundColor = data.model().color;
-        document.body.appendChild(el);
+        element.appendChild(el);
         el.kngModel = data.model;
         
         if (data.model().shape == 'circle')
