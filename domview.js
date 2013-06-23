@@ -7,9 +7,12 @@ function DOMView(element, pixelsPerUnit) {
     console.log('DOMVIEW');    
     console.log(view);
     view.abc = 1209;
-    $(element).on('click', function(e) {
-        var x = e.pageX / view.pixelsPerUnit;
-        var y = e.pageY / view.pixelsPerUnit;        
+    $(element).click(function(e) {
+        var offset = $(element).offset();
+        var mouseX = e.pageX - offset.left;
+        var mouseY = e.pageY - offset.top;        
+        var x =  mouseX / view.pixelsPerUnit;
+        var y = mouseY / view.pixelsPerUnit;        
         
         var target = $(e.target).closest('.kang-visual');         
 

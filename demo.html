@@ -130,7 +130,7 @@ var physics = new SimplePhysics;
 
 
 $(function() {
-    var view = new DOMView(document.body, 1);
+    var view = new DOMView($("#map")[0], 1);
     var minimap = new DOMView($("#minimap")[0], .2);
 
 
@@ -344,7 +344,9 @@ kng.define('ball', {
 
 
 </script>
-<div id="minimap" style="position:fixed;width:400px;right:0px"></div>
+<div id="minimap" style="background:#020;position:fixed;height:300px;width:400px;right:0px"></div>
+
 <div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>
-<canvas width=800 height=600 style="__display:none;margin-left:-3px;margin-top:14px;padding:0;background:#666" id="canvas"></canvas>
+<!--<canvas width=800 height=600 style="__display:none;margin-left:-3px;margin-top:14px;padding:0;background:#666" id="canvas"></canvas>-->
+<div id="map" style="width:700px;height:600px;background:#6a3"></div>
 <script src="debug.js"></script>
