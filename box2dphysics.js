@@ -28,10 +28,10 @@ function Box2DPhysics() {
         var fixtureB = contact.GetFixtureB();
         var objB = fixtureB.GetBody().GetUserData();
         if (!isEnd) {
-            console.log("AAAAAAAAAAAAA");
+           // console.log("AAAAAAAAAAAAA");
             //objA.send({name:'collision'},kng.send);
             //objB.send({name:'collision'},kng.send);        
-            console.log("BBBB");            
+           // console.log("BBBB");            
         }
     }
 

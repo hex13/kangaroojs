@@ -7,35 +7,70 @@ function DOMView(element, pixelsPerUnit) {
     console.log('DOMVIEW');    
     console.log(view);
     view.abc = 1209;
-    $(element).click(function(e) {
+    
+    var dragData = {};
+    $(element).on('click mousedown mouseup mousemove', function(e) {
         var offset = $(element).offset();
         var mouseX = e.pageX - offset.left;
         var mouseY = e.pageY - offset.top;        
         var x =  mouseX / view.pixelsPerUnit;
         var y = mouseY / view.pixelsPerUnit;        
+        var target = $(e.target).closest('.kang-visual');                 
+        var model = target && target[0] && target[0].kngModel;     
+        var mouseData = {x:x, y:y, target:target, e:e, model:model};   
         
-        var target = $(e.target).closest('.kang-visual');         
+        function click() {
 
-        var model = target && target[0] && target[0].kngModel;//e.target && e.target.kngModel;
-        if (model) {
-            kng.send({to:model.obj, name:'click'});
-        }
-        else {
-            kng.send({to:'scene', name:'create', e:e, obj: {
-                name:'ball',
-                model: {
-                        x:x, y:y
+            if (model) {
+                kng.send({to:model.obj, name:'click'});
+            }
+            else {
+                kng.send({to:'scene', name:'create', e:e, obj: {
+                    name:'ball',
+                    model: {
+                            x:x, y:y
+                        }
                     }
-                }
-            });
-        }        
+                });
+            }        
+        }
+       // if (e.type=='click') click();
+        if (e.type=='mousedown') {
+            dragData = {start:mouseData};
+        }
+        
+        if (e.type=='mousemove') {
+            if (dragData.start)
+                document.title = mouseData.x;
+        }
+        
+        
+        if (e.type=='mouseup') {
+            dragData.end = mouseData;
+            var vx = (dragData.end.x - dragData.start.x)/20;            
+            var vy = (dragData.end.y - dragData.start.y)/20;
+            
+            if (!dragData.start.model) {
+                    kng.send({to:'scene', name:'create', e:e, obj: [{
+                        name:'ball',
+                        model: {
+                                x:dragData.start.x, y:dragData.start.y, vx:vx, vy:vy
+                            }
+                        }  ]
+                    });            
+            } else {
+                model.vx = 0;
+  
+            }            
+            
+            dragData.start = dragData.end = null; 
+        }
         
         
         
-        
-        
+               
     });
-    
+   
 
    var d = Math.random()*0.01;
     view.onRender = function(data) {
