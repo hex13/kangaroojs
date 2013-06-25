@@ -15,7 +15,7 @@ function Box2DPhysics() {
     
     var physics = new Container();
     
-    var world = new Box2D.Dynamics.b2World(new b2Vec2(0, 10), true);
+    var world = new Box2D.Dynamics.b2World(new b2Vec2(0, 12), true);
     
     
     
@@ -55,7 +55,7 @@ function Box2DPhysics() {
     var fixDef = new b2FixtureDef;
     fixDef.density = 1.0;
     fixDef.friction = 0.5;
-    fixDef.restitution = 0.9;    
+    fixDef.restitution = 0.7;    
 
 
     function DEBUG() {
@@ -79,8 +79,7 @@ function Box2DPhysics() {
     var SCALE_VEL = 1;  
     
     physics.update = function() {                
-        this.send('move');       
-        this.send('update');         
+    
         this.each(function(data) {
             var m = data.model();
             var nm = data.model(1);
@@ -90,10 +89,28 @@ function Box2DPhysics() {
             nm.x = (pos.x / SCALE_POS) - m.w/2; 
             nm.y = (pos.y / SCALE_POS) - m.h/2;
             nm.rotation = data.body.GetAngle() / (Math.PI * 2) * 360.0;
-            
+            //var vel = data.body.GetLinearVelocity();             
+            //nm.vx = vel.x; nm.vy = vel.y;
             //data.body.SetLinearVelocity(new b2Vec2(vx, vy));             
         });
         this.send('update');
+        this.send('move');       
+        this.send('update');         
+        this.each(function(data) {
+            var m = data.model();
+            var nm = data.model(1);
+            var vx = m.vx * SCALE_VEL;
+            var vy = m.vy * SCALE_VEL;     
+            // primitive checksum calculation (it's lame, I know ;) 
+            var vsum = (~~(vx * 100)) + ';' + (~~(vy * 100)) + ';' + (~~(vx * 20)) + ';' + (~~(vy * 20));
+            
+            if (vsum != data.vsum) // if velocity has changed in the model...
+                data.body.SetLinearVelocity(new b2Vec2(vx, vy)); // ...update box2d
+            data.vsum = vsum;
+
+
+        });
+        
         
         world.Step(1 / 60, 10, 10);        
         world.DrawDebugData();        

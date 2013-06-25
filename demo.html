@@ -29,7 +29,7 @@ function assert(cond, desc) {
 <script src="simplephysics.js"></script>
 <script src="box2dphysics.js"></script>
 
-
+<body ondragstart="return false;">
 <div id="templates">
 
     <div id="welcome">
@@ -163,7 +163,7 @@ $(function() {
        com.send({to:'scene', name:'create', obj: {name:'UnderscoreTemplate', 
             model: {
                 state:'showPoints', w:300, h:100,
-                x:400, y:100, vx:0, vy:0, game:env.game.model(), template: '<%=game.points %>',
+                x:400, y:400, vx:0, vy:0, game:env.game.model(), template: '<%=game.points %>',
                 text:'kotek', gravity:-0.0, collidable:false
             }, 
             options: {linkModel:false},
@@ -267,13 +267,13 @@ $(function() {
     
   
     
-    $(document).on('mousemove', function(e) {
+   /* $(document).on('mousemove', function(e) {
         var model = e.target && e.target.kngModel;
         if (model) {
             model(1).vx = model(1).vy = 0; 
         }
 
-    });
+    });*/
 
     
     function iterate() {
@@ -350,3 +350,5 @@ kng.define('ball', {
 <!--<canvas width=800 height=600 style="__display:none;margin-left:-3px;margin-top:14px;padding:0;background:#666" id="canvas"></canvas>-->
 <div id="map" style="width:700px;height:600px;background:#6a3"></div>
 <script src="debug.js"></script>
+
+</body>

@@ -1,5 +1,10 @@
+* {
+    user-select:none;
+    
+}
 
 .kang-visual {
+  cursor:pointer;
   left:0px;
   top:0px;
   position:absolute;

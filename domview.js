@@ -40,8 +40,13 @@ function DOMView(element, pixelsPerUnit) {
         }
         
         if (e.type=='mousemove') {
-            if (dragData.start)
-                document.title = mouseData.x;
+            if (dragData.start && dragData.start.model) {
+               var vx = (mouseData.x - dragData.start.x)/20;            
+               var vy = (mouseData.y - dragData.start.y)/20;
+            
+               dragData.start.model(1).vx = vx;
+               dragData.start.model(1).vy = vy;                
+            }
         }
         
         
@@ -59,8 +64,8 @@ function DOMView(element, pixelsPerUnit) {
                         }  ]
                     });            
             } else {
-                model.vx = 0;
-  
+               // model(1).vx *= 0.0;
+              //  model(1).vy *= 0.0;  
             }            
             
             dragData.start = dragData.end = null; 
