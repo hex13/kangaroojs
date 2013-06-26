@@ -71,7 +71,7 @@ function Box2DPhysics() {
     
     
     
-    //DEBUG();			
+    DEBUG();			
 
     
    

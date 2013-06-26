@@ -163,7 +163,7 @@ $(function() {
        com.send({to:'scene', name:'create', obj: {name:'UnderscoreTemplate', 
             model: {
                 state:'showPoints', w:300, h:100,
-                x:400, y:400, vx:0, vy:0, game:env.game.model(), template: '<%=game.points %>',
+                x:200, y:400, vx:0, vy:0, game:env.game.model(), template: '<%=game.points %>',
                 text:'kotek', gravity:-0.0, collidable:false
             }, 
             options: {linkModel:false},
@@ -329,14 +329,7 @@ kng.define('ball', {
                 });
         }, 
         move: function(model) {
-            if (model().y>600 || model().y<0)  {
-                model(1).y -= model().vy*2;
-                model(1).vy *= -0.8;                
-            }
-            if (model().x>600 || model().x<0)  {
-                model(1).x -= model().vx*2;
-                model(1).vx *= -0.8;                
-            }
+
         }
     }
 }, 'spr');
@@ -344,11 +337,12 @@ kng.define('ball', {
 
 
 </script>
-<div id="minimap" style="background:#020;position:fixed;height:300px;width:400px;right:0px"></div>
+<div id="minimap" style="background:#020;position:fixed;height:300px;width:300px;right:0px"></div>
 
 <div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>
-<!--<canvas width=800 height=600 style="__display:none;margin-left:-3px;margin-top:14px;padding:0;background:#666" id="canvas"></canvas>-->
-<div id="map" style="width:700px;height:600px;background:#6a3"></div>
+<div id="map" style="width:900px;height:600px;background:#6a3"></div>
+<canvas width=800 height=600 style="__display:none;margin-left:-3px;margin-top:14px;padding:0;background:#666;" id="canvas"></canvas>
+
 <script src="debug.js"></script>
 
 </body>

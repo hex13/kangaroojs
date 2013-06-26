@@ -9,7 +9,7 @@ function DOMView(element, pixelsPerUnit) {
     view.abc = 1209;
     
     var dragData = {};
-    $(element).on('click mousedown mouseup mousemove', function(e) {
+    $(element).on('click mousedown mouseup mousemove mouseleave', function(e) {
         var offset = $(element).offset();
         var mouseX = e.pageX - offset.left;
         var mouseY = e.pageY - offset.top;        
@@ -35,11 +35,14 @@ function DOMView(element, pixelsPerUnit) {
             }        
         }
        // if (e.type=='click') click();
+       
         if (e.type=='mousedown') {
             dragData = {start:mouseData};
+
         }
         
         if (e.type=='mousemove') {
+            document.title = dragData.start;        
             if (dragData.start && dragData.start.model) {
                var vx = (mouseData.x - dragData.start.x)/20;            
                var vy = (mouseData.y - dragData.start.y)/20;
@@ -49,8 +52,12 @@ function DOMView(element, pixelsPerUnit) {
             }
         }
         
+
+        if (e.type=='mouseleave') {
+
+        }
         
-        if (e.type=='mouseup') {
+        if (e.type=='mouseup' || e.type=='mouseleave') {
             dragData.end = mouseData;
             var vx = (dragData.end.x - dragData.start.x)/20;            
             var vy = (dragData.end.y - dragData.start.y)/20;
