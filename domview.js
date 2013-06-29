@@ -89,7 +89,7 @@ function DOMView(element, pixelsPerUnit) {
         var ppu = this.pixelsPerUnit;
         //this.pixelsPerUnit += d;
         if (this.pixelsPerUnit>3 || this.pixelsPerUnit<0.5) d*=-1;
-        
+
         var style = data.style;            
         var el = data.el;
         model = data.model();        
@@ -156,6 +156,9 @@ function DOMView(element, pixelsPerUnit) {
         data.style.backgroundColor = data.model().color;
         element.appendChild(el);
         el.kngModel = data.model;
+        
+        //var imgUrl = kng.images[data.model.obj.name];
+        //data.style.backgroundImage = 'url("'+imgUrl + '")';
         
         if (data.model().shape == 'circle')
             data.style.borderRadius = '50%';

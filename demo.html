@@ -48,9 +48,6 @@ function assert(cond, desc) {
 
 <script>
 
-//TODO:
-// check if there is a bug - do objects from different scenes collide?
-// or they are created in the same scene instead of two different?
 
 //18.06.2013
 // 
@@ -125,13 +122,60 @@ function assert(cond, desc) {
 kng.init();
 
 
+var env = {};
+var com = new Messenger(function(id) {
+    if (_.isString(id))
+        return env[id];
+    return id;
+});
+kng.send = function(msg) {
+    com.send(msg);
+}
+
+
 
 var physics = new SimplePhysics;
 
 
-$(function() {
+kng.loadImages({
+        'ball':'images/ball1.png',
+}).run(function() {
+
+
     var view = new DOMView($("#map")[0], 1);
     var minimap = new DOMView($("#minimap")[0], .2);
+    
+    
+    
+
+    kng.define('ball', {
+        events: {
+            init: function(model) {
+                //model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
+            },
+            click: function(model, pluginData, $do, msg) {
+                $do.killYourself();
+            },
+            collision: function(model, pluginData, doFollowing, msg) {
+                doFollowing.
+                    killYourself().
+                    points(1).                
+                    create('ball', {
+                        x:_.random(0,700),
+                        y:_.random(0,570),
+                        vy:2,
+                        vx:3
+                    });
+            }, 
+            move: function(model) {
+
+            }
+        }
+    }, 'spr');    
+    
+    
+    
+    
 
 
     env.scene = kng.create('scene', { 
@@ -266,16 +310,7 @@ $(function() {
     });
     
   
-    
-   /* $(document).on('mousemove', function(e) {
-        var model = e.target && e.target.kngModel;
-        if (model) {
-            model(1).vx = model(1).vy = 0; 
-        }
-
-    });*/
-
-    
+   
     function iterate() {
 
         
@@ -295,44 +330,10 @@ $(function() {
     
 });
 
-var env = {};
-var com = new Messenger(function(id) {
-    if (_.isString(id))
-        return env[id];
-    return id;
-});
-kng.send = function(msg) {
-    com.send(msg);
-}
 
 
 
 
-
-kng.define('ball', {
-    events: {
-        init: function(model) {
-            //model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
-        },
-        click: function(model, pluginData, $do, msg) {
-            $do.killYourself();
-        },
-        collision: function(model, pluginData, doFollowing, msg) {
-            doFollowing.
-                killYourself().
-                points(1).                
-                create('ball', {
-                    x:_.random(0,700),
-                    y:_.random(0,570),
-                    vy:2,
-                    vx:3
-                });
-        }, 
-        move: function(model) {
-
-        }
-    }
-}, 'spr');
 
 
 

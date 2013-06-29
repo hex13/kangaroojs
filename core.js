@@ -5,6 +5,8 @@ window.oRequestAnimationFrame || function(callback) {
 
 window.kng = window.kng || {}; // kangaroo namespace
 
+
+
 _.extend(kng, {
     reset: function() {
         this.types = {};
@@ -21,10 +23,13 @@ _.extend(kng, {
     modules: {},
     types: {},
     env: {},
-    system: {}
+    system: {},
+    tasks: {}
 });
 
-
+kng.taskCount = function() {
+    return Object.keys(this.tasks).length;
+}
 // ---- game objects ----
 
 
@@ -158,3 +163,51 @@ kng.init = function() {
     
 }
 
+
+kng.loadImages = function loadImages(imgurls) {
+    var self = this;        
+    this.images = this.images || {};
+    this.tasks = this.tasks || {};
+    var key = 'images' + (~~(Math.random()*1000000));
+
+    this.tasks[key] = {desc:'Loading images...'};
+    
+    var imgcount = 0;
+    for (var name in imgurls) {
+        if (imgurls.hasOwnProperty(name))
+            imgcount++;
+    }
+        
+    for (var name in imgurls) {
+        var img = new Image();
+        img.onload = function() {
+            imgcount--;
+            if (imgcount==0) {
+                delete self.tasks[key];
+            }
+        };
+
+        img.src = imgurls[name];
+        this.images[name] = img;        
+    }
+    
+    return this;
+}
+
+
+kng.run = function(callback) {
+    var self = this;
+
+
+    
+    $(function() {
+        function check() {
+            if (self.taskCount()==0) 
+                callback(self);
+            else 
+                setTimeout(check, 100);
+
+        };
+        check();
+    });
+}
