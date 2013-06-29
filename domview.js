@@ -58,22 +58,24 @@ function DOMView(element, pixelsPerUnit) {
         }
         
         if (e.type=='mouseup' || e.type=='mouseleave') {
-            dragData.end = mouseData;
-            var vx = (dragData.end.x - dragData.start.x)/20;            
-            var vy = (dragData.end.y - dragData.start.y)/20;
-            
-            if (!dragData.start.model) {
-                    kng.send({to:'scene', name:'create', e:e, obj: [{
-                        name:'ball',
-                        model: {
-                                x:dragData.start.x, y:dragData.start.y, vx:vx, vy:vy
-                            }
-                        }  ]
-                    });            
-            } else {
-               // model(1).vx *= 0.0;
-              //  model(1).vy *= 0.0;  
-            }            
+            if (dragData.start) {
+                dragData.end = mouseData;
+                var vx = (dragData.end.x - dragData.start.x)/20;            
+                var vy = (dragData.end.y - dragData.start.y)/20;
+                
+                if (!dragData.start.model) {
+                        kng.send({to:'scene', name:'create', e:e, obj: [{
+                            name:'ball',
+                            model: {
+                                    x:dragData.start.x, y:dragData.start.y, vx:vx, vy:vy
+                                }
+                            }  ]
+                        });            
+                } else {
+                   // model(1).vx *= 0.0;
+                  //  model(1).vy *= 0.0;  
+                }            
+            }
             
             dragData.start = dragData.end = null; 
         }
@@ -140,9 +142,6 @@ function DOMView(element, pixelsPerUnit) {
         }
         
 
-        
-        
-        
     }
 
     view.onAdd = function(data) {
@@ -157,8 +156,11 @@ function DOMView(element, pixelsPerUnit) {
         element.appendChild(el);
         el.kngModel = data.model;
         
-        //var imgUrl = kng.images[data.model.obj.name];
-        //data.style.backgroundImage = 'url("'+imgUrl + '")';
+        var img = data.model.obj.image;
+        if (img)
+            console.log('url("'+ img.src + '")');
+        if (img)
+            data.style.backgroundImage = 'url("'+ img.src + '")';
         
         if (data.model().shape == 'circle')
             data.style.borderRadius = '50%';

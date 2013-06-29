@@ -61,12 +61,26 @@ kng.defineTypes = function(kng) {
                 
                 create: function(model, plugin, aaa, msg) {
                 
-                    var objData = msg.obj;
+                    var objData = _.clone(msg.obj);
                     var self = this;
                     (_.isArray(objData)?objData:[objData]).forEach(function(objData) {
                         objData.model.color = self.color;//!!!DEBUG                
+                        //if (objData.image
+                        //objData.model.w = 100;
+
+                        var ppu = model().pixelsPerUnit || 1;
+                        var img = kng.type2image(objData.name);
+                        if (img) {
+                            objData.model.w = img.width / ppu;
+                            objData.model.h = img.height / ppu;                            
+                        }                        
                         var obj = kng.create(objData.name, objData, self);
-                        console.log(obj.model().shape);
+                        /*if (obj.image) {
+                            obj.model(1).w = obj.image.width;
+                            obj.model(1).h = obj.image.height;
+                                                         
+                        }*/
+
                         self.observers.forEach(function(observer) {
                             observer.add(obj.model);
                         });                

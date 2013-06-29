@@ -139,6 +139,7 @@ var physics = new SimplePhysics;
 
 kng.loadImages({
         'ball':'images/ball1.png',
+        'UnderscoreTemplate':'file:///home/litwa/Desktop/k3/kangaroojs/images/version2_yellow_tiger_cat.png',
 }).run(function() {
 
 
@@ -180,7 +181,8 @@ kng.loadImages({
 
     env.scene = kng.create('scene', { 
         model: {
-            physics: new Box2DPhysics
+            physics: new Box2DPhysics,
+            pixelsPerUnit:1
         }, plugins: [
            // kng.ShapePlugin('circle')
         ]

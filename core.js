@@ -24,7 +24,9 @@ _.extend(kng, {
     types: {},
     env: {},
     system: {},
-    tasks: {}
+    tasks: {},
+    images: {}
+    
 });
 
 kng.taskCount = function() {
@@ -44,6 +46,11 @@ kng.define = function(name, definition, ancestor) {
                     return 'kang-' + c;
     }).join(' ');            
     
+    var img = this.images[name] || ancestor.image;
+    if (img)
+        type.image = img;
+    console.log(img && img.src);
+    console.log('IMG');    
 
     
     type.events = _.extend(_.clone(ancestor.events || {}), definition.events || {});
@@ -159,7 +166,7 @@ kng.Obj.prototype = {
 // w and h should be correct width/height of the object (taken from sprite width/height))   
 kng.init = function() {
 
-    kng.defineTypes(kng);
+    //kng.defineTypes(kng);
     
 }
 
@@ -194,11 +201,16 @@ kng.loadImages = function loadImages(imgurls) {
     return this;
 }
 
+kng.type2image = function(typeName) {
+    var t = this.types[typeName]
+    if (t)
+        return t.image;       
+}
 
 kng.run = function(callback) {
     var self = this;
 
-
+    self.defineTypes(kng);
     
     $(function() {
         function check() {
