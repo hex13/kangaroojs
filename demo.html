@@ -142,8 +142,6 @@ var physics = new SimplePhysics;
 var game = (function () {
 
 
-
- 
     
     var view;
     var minimap;
@@ -154,7 +152,8 @@ var game = (function () {
         view = new DOMView($("#map")[0], 1);
         minimap = new DOMView($("#minimap")[0], .2);
         
-        
+        env.scene && env.scene.send({name:'cleanup'});
+        env.hud && env.hud.send({name:'cleanup'});
 
 
         env.scene = kng.create('scene', { 
@@ -198,7 +197,7 @@ var game = (function () {
             objects:[{
                         name:'ball', 
                         model: {
-                            x:450,y:200,vy:-10,vx:5,w:300,h:10,
+                            x:450,y:200,vy:-1,vx:2,w:300,h:10,
                             gravity:0,
                             shape:'rect',
                             rotation:0
@@ -206,7 +205,7 @@ var game = (function () {
                 },  {
                         name:'ball', 
                         model: {
-                            x:260,y:100,vy:-10,vx:5,h:300,w:10,
+                            x:260,y:100,vy:-1,vx:0.5,h:300,w:10,
                             gravity:0,
                             shape:'rect',
                             rotation:0
@@ -230,7 +229,9 @@ var game = (function () {
     }
 
     return {
-        run: function () {
+        start: function () {
+            timer && timer.stop();
+            
             kng.define('ball', {
                 events: {
                     init: function(model) {
@@ -275,7 +276,7 @@ var game = (function () {
 kng.loadImages({
         'ball':'images/1.png',
         'UnderscoreTemplate':'images/2.png',
-}).run(game.run);
+}).run(game.start);
 
 $(function() {
     $('#pause').on('click', function() {
@@ -289,6 +290,10 @@ $(function() {
     $('#toggle').on('click', function() {
         alert('not implemented');
     });        
+    
+    $("#restart").on('click', function() {
+        game.start();
+    });
 
 });
 
@@ -301,6 +306,7 @@ $(function() {
 <button id="pause">Pause</button>
 <button id="start">Start</button>
 <button id="toggle">Toggle</button>
+<button id="restart">Restart</button>
 <div id="minimap" style="background:#020;position:fixed;height:300px;width:300px;right:0px"></div>
 
 <div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>

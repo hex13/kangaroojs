@@ -57,7 +57,13 @@ kng.defineTypes = function(kng) {
                 },
                 
                 load: function(model, plugin, $do, msg) {
-                },                
+                },      
+
+                cleanup: function() {
+                    this.observers.forEach(function(observer) {
+                        observer.cleanup && observer.cleanup();
+                    });                
+                },
                 
                 create: function(model, plugin, aaa, msg) {
                 

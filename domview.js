@@ -9,7 +9,7 @@ function DOMView(element, pixelsPerUnit) {
     view.abc = 1209;
     
     var dragData = {};
-    $(element).on('click mousedown mouseup mousemove mouseleave', function(e) {
+    var eventHandler = function(e) {
         var offset = $(element).offset();
         var mouseX = e.pageX - offset.left;
         var mouseY = e.pageY - offset.top;        
@@ -82,7 +82,8 @@ function DOMView(element, pixelsPerUnit) {
         
         
                
-    });
+    };
+    $(element).on('click mousedown mouseup mousemove mouseleave', eventHandler);
    
 
    var d = Math.random()*0.01;
@@ -167,7 +168,18 @@ function DOMView(element, pixelsPerUnit) {
     
     view.onRemove = function(data) {
         var el = data.el;
-        el.parentNode.removeChild(el);
+        if (!el.parentNode ){ 
+            console.log(el, '!!! WHY SOMETIMES is parentNode NULL?');
+        }
+        el.parentNode && el.parentNode.removeChild(el);
+    }
+    
+    view.cleanup = function() {
+        view.each(function(data) {
+            view.onRemove(data);
+        });
+        
+        $(element).unbind('click mousedown mouseup mousemove mouseleave', eventHandler);
     }
     
     return view;
