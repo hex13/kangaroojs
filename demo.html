@@ -20,6 +20,7 @@ function assert(cond, desc) {
 <script src="model.js"></script>
 <script src="messenger.js"></script>
 <script src="container.js"></script>
+<script src="timer.js"></script>
 
 <script src="core.js"></script>
 <script src="types.js"></script>
@@ -134,212 +135,172 @@ kng.send = function(msg) {
 
 
 
+
 var physics = new SimplePhysics;
 
 
-kng.loadImages({
-        'ball':'images/ball1.png',
-        'UnderscoreTemplate':'file:///home/litwa/Desktop/k3/kangaroojs/images/version2_yellow_tiger_cat.png',
-}).run(function() {
+var game = (function () {
 
 
-    var view = new DOMView($("#map")[0], 1);
-    var minimap = new DOMView($("#minimap")[0], .2);
-    
-    
-    
 
-    kng.define('ball', {
-        events: {
-            init: function(model) {
-                //model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
-            },
-            click: function(model, pluginData, $do, msg) {
-                $do.killYourself();
-            },
-            collision: function(model, pluginData, doFollowing, msg) {
-                doFollowing.
-                    killYourself().
-                    points(1).                
-                    create('ball', {
-                        x:_.random(0,700),
-                        y:_.random(0,570),
-                        vy:2,
-                        vx:3
-                    });
-            }, 
-            move: function(model) {
+ 
+    
+    var view;
+    var minimap;
+    var timer;
 
-            }
-        }
-    }, 'spr');    
     
-    
-    
-    
+    function initializeGame() {
+        view = new DOMView($("#map")[0], 1);
+        minimap = new DOMView($("#minimap")[0], .2);
+        
+        
 
 
-    env.scene = kng.create('scene', { 
-        model: {
-            physics: new Box2DPhysics,
-            pixelsPerUnit:1
-        }, plugins: [
-           // kng.ShapePlugin('circle')
-        ]
-    });
-    env.scene2 = kng.create('scene', { 
-        model: {
-            physics: new SimplePhysics
-        }, plugins: [
-            kng.ShapePlugin('circle')
-        ]
-    });    
-    
-    env.game = kng.create('', {
-        model: {
-            points:0
-        },
-        events: {
-            points: function(model, plugin, aaa, msg) {
-                model().points += msg.points;
-            }
-        }
-    });
-    
-       com.send({to:'scene', name:'create', obj: {name:'UnderscoreTemplate', 
+        env.scene = kng.create('scene', { 
             model: {
-                state:'showPoints', w:300, h:100,
-                x:200, y:400, vx:0, vy:0, game:env.game.model(), template: '<%=game.points %>',
-                text:'kotek', gravity:-0.0, collidable:false
-            }, 
-            options: {linkModel:false},
-            events: {
-                click: function(model) {
-                    var state = model().state;                    
-                    model(1).state = state=='showDate'?'showPoints':'showDate';
-                }
+                physics: new Box2DPhysics,
+                pixelsPerUnit:1
+            }
+        });
+        env.hud = kng.create('scene', { 
+            model: {
+                physics: new SimplePhysics
+            }, plugins: [
+                kng.ShapePlugin('circle')
+            ]
+        });    
+        
+        env.game = kng.create('', {
+            model: {
+                points:0
             },
-            states: {
-                showPoints: {
-                    move: function(model) {
-                        model(1).template =  'punkty <%=game.points %>';
-                    },
-                    click: function() {
-                        alert('kliknąłeś na punkty. teraz będzie data!');
-                    }
-                },
-                showDate: {
-                    move: function(model) {
-                        model(1).template = new Date() + '';
-                    },
-                    click: function() {
-                        alert('kliknąłeś na datę. teraz będą punkty!');
-                    }
-                    
-                }
-                
-            }
-       }});       
-    
-    env.scene.send({name:'addObserver', observer:view});
-    env.scene.send({name:'addObserver', observer:minimap});    
-    
-    env.scene2.send({name:'addObserver', observer:view});      
-
-
-    com.send({
-        to:'scene', 
-        name:'create', 
-            obj:[{
-                    name:'ball', 
-                    model: {
-                        x:200,y:400,vy:-10,vx:5,w:300,h:10,
-                        gravity:0,
-                        shape:'rect',
-                        rotation:0
-                    }
-            },  {
-                    name:'ball', 
-                    model: {
-                        x:200,y:100,vy:-10,vx:5,h:300,w:10,
-                        gravity:0,
-                        shape:'rect',
-                        rotation:0
-                    }
-            }]
-     });                        
-
-
-
-
-
-    $(document).keydown(function(e) {
-    
-        if (e.keyCode!=13 && e.keyCode!=32) return;
-        
-        com.send({to:'scene2', name:'create', obj: { 
-            name:'UnderscoreTemplate', 
-            model: {template:$("#welcome").html(),
-                    x:100, y:400, opacity:0, popup:[2000,400]
-                    },
             events: {
-                click: function(model, plugin, aaa, msg) {
-                    //model(1).opacity = 0.2;
-                    //model(1).fadeOut = 1000;
-
+                points: function(model, plugin, aaa, msg) {
+                    model().points += msg.points;
                 }
             }
-        }});
+        });
         
+    
+        env.scene.send({name:'addObserver', observer:view});
+        env.scene.send({name:'addObserver', observer:minimap});    
         
-        
-        var scene = e.keyCode==13?'scene':'scene2';
-        com.send({to:scene, name:'create', obj: {
-                        name:'ball', model: {
-                            x:200,y:200,vy:-10,vx:5,
-                            shape:e.keyCode==13?'circle':'rect',
-                            rotation:0
-                        },
-                        events: {
-                            move:function(model) {
-                               // model(1).rotation+=1;
-                            }
-                        }
-                    }
-                });     
-       com.send({to:'game', name:'points', points:1});   
+        env.hud.send({name:'addObserver', observer:view});      
+    }
+    
+    
+    
+    function loadLevel() {
+
        
-    });
+        var level = {
+            objects:[{
+                        name:'ball', 
+                        model: {
+                            x:450,y:200,vy:-10,vx:5,w:300,h:10,
+                            gravity:0,
+                            shape:'rect',
+                            rotation:0
+                        }
+                },  {
+                        name:'ball', 
+                        model: {
+                            x:260,y:100,vy:-10,vx:5,h:300,w:10,
+                            gravity:0,
+                            shape:'rect',
+                            rotation:0
+                        }
+                } ]
+        };
+    
+            
+        com.send({to:'scene', name:'create', obj:level.objects});      
+    }
     
   
-   
-    function iterate() {
-
+    function gameloop() {
         
         com.send({to:'scene', name:'move'});
-        com.send({to:'scene2', name:'move'});
-        
+        com.send({to:'hud', name:'move'});
 
         com.dispatch();        
         view.render();
         minimap.render();
     }
+
+    return {
+        run: function () {
+            kng.define('ball', {
+                events: {
+                    init: function(model) {
+                        //model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
+                    },
+                    click: function(model, pluginData, $do, msg) {
+                        $do.killYourself();
+                    },
+                    collision: function(model, pluginData, doFollowing, msg) {
+                        doFollowing.
+                            killYourself().
+                            points(1).                
+                            create('ball', {
+                                x:_.random(0,700),
+                                y:_.random(0,570),
+                                vy:2,
+                                vx:3
+                            });
+                    }, 
+                    move: function(model) {
+
+                    }
+                }
+            }, 'spr');           
+        
+        
+        
+            initializeGame();    
+            loadLevel();
+            timer = new kng.Timer(gameloop,17).start();
+        },
+        pause: function() {
+            timer.stop();
+        },
+        resume: function() {
+            timer.start();
+        }
+    };
     
+})();
+
+kng.loadImages({
+        'ball':'images/1.png',
+        'UnderscoreTemplate':'images/2.png',
+}).run(game.run);
+
+$(function() {
+    $('#pause').on('click', function() {
+        game.pause();
+    });
     
-    setInterval(iterate, 16);
+    $('#start').on('click', function() {
+        game.resume();
+    });    
     
-     
-    
+    $('#toggle').on('click', function() {
+        alert('not implemented');
+    });        
+
 });
 
 
 
 
 
-
-
-
 </script>
+
+<button id="pause">Pause</button>
+<button id="start">Start</button>
+<button id="toggle">Toggle</button>
 <div id="minimap" style="background:#020;position:fixed;height:300px;width:300px;right:0px"></div>
 
 <div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>
@@ -347,5 +308,6 @@ kng.loadImages({
 <canvas width=800 height=600 style="__display:none;margin-left:-3px;margin-top:14px;padding:0;background:#666;" id="canvas"></canvas>
 
 <script src="debug.js"></script>
+
 
 </body>

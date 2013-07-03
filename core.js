@@ -72,6 +72,11 @@ kng.define = function(name, definition, ancestor) {
     return type;        
 }
 
+/*kng.type = function(name, definition, ancestor) {    
+    this.define.apply(this, arguments);
+    return this;
+}*/
+
 // create object of type 'name'
 kng.create = function(name, properties, scene) {
     var obj = new kng.Obj(kng.define('', properties || {}, name));
