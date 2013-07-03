@@ -42,7 +42,6 @@ function DOMView(element, pixelsPerUnit) {
         }
         
         if (e.type=='mousemove') {
-            document.title = dragData.start;        
             if (dragData.start && dragData.start.model) {
                var vx = (mouseData.x - dragData.start.x)/20;            
                var vy = (mouseData.y - dragData.start.y)/20;
