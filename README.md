@@ -3,7 +3,7 @@ kangaroojs
 
 KangarooJS is message-driven game microframework written in JavaScript
 
-Version 0.2 dev
+Version 0.3 dev
 
 now:
 
