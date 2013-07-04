@@ -146,6 +146,8 @@ var game = (function () {
     var view;
     var minimap;
     var timer;
+    
+    var levelIndex = 0;
 
     
     function initializeGame() {
@@ -193,25 +195,66 @@ var game = (function () {
     function loadLevel() {
 
        
-        var level = {
-            objects:[{
-                        name:'ball', 
-                        model: {
-                            x:450,y:200,vy:-1,vx:2,w:300,h:10,
-                            gravity:0,
-                            shape:'rect',
-                            rotation:0
-                        }
-                },  {
-                        name:'ball', 
-                        model: {
-                            x:260,y:100,vy:-1,vx:0.5,h:300,w:10,
-                            gravity:0,
-                            shape:'rect',
-                            rotation:0
-                        }
-                } ]
-        };
+        var levels = [
+            {
+                objects:[{
+                            name:'ball', 
+                            model: {
+                                x:450,y:200,vy:-1,vx:2,w:300,h:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  {
+                            name:'ball', 
+                            model: {
+                                x:260,y:100,vy:-1,vx:0.5,h:300,w:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    } ]
+            },
+
+            {
+                objects:[{
+                            name:'ball', 
+                            model: {
+                                x:450,y:200,vy:-1,vx:2,w:300,h:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  {
+                            name:'ball', 
+                            model: {
+                                x:260,y:100,vy:-1,vx:0.5,h:300,w:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },
+                    
+
+                    {
+                            name:'ball', 
+                            model: {
+                                x:360,y:100,vy:-1,vx:0.5,h:300,w:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    }                    
+                    
+                    
+                    
+                    ]
+            },
+            
+            
+        ]
+        
+        var level = levels[levelIndex];
     
             
         com.send({to:'scene', name:'create', obj:level.objects});      
@@ -227,6 +270,8 @@ var game = (function () {
         view.render();
         minimap.render();
     }
+    
+    
 
     return {
         start: function () {
@@ -268,7 +313,12 @@ var game = (function () {
         },
         resume: function() {
             timer.start();
+        },
+        nextLevel:function() {
+            levelIndex++;
+            this.start();
         }
+        
     };
     
 })();
@@ -294,6 +344,11 @@ $(function() {
     $("#restart").on('click', function() {
         game.start();
     });
+    
+    $("#nextlevel").on('click', function() {
+        game.nextLevel();
+    });
+    
 
 });
 
@@ -307,6 +362,7 @@ $(function() {
 <button id="start">Start</button>
 <button id="toggle">Toggle</button>
 <button id="restart">Restart</button>
+<button id="nextlevel">NextLevel</button>
 <div id="minimap" style="background:#020;position:fixed;height:300px;width:300px;right:0px"></div>
 
 <div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>
