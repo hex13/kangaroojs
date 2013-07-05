@@ -139,7 +139,7 @@ kng.send = function(msg) {
 var physics = new SimplePhysics;
 
 
-var game = (function (options) {
+function Game(options) {
 
     var levels = options.levels;
     
@@ -263,7 +263,10 @@ var game = (function (options) {
         
     };
     
-})( {  levels: [
+};
+
+
+var game = Game( {  levels: [
             {
                 objects:[{
                             name:'ball', 
