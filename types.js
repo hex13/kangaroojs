@@ -3,7 +3,7 @@ kng.defineTypes = function(kng) {
         model: {
           x: 400, y:100, vx:0,  vy:0, w:60, h:60,  /*targetx:100, targety:100,*/
           rotation:0,
-          gravity: 0, collidable: false, shape:'rect',
+          gravity: 0, collidable: false, shape:'rect', active:true,
         }, plugins: [kng.TargetPlugin],
         events: {            
             update: function(model) {

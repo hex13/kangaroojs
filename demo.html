@@ -126,6 +126,7 @@ function assert(cond, desc) {
 kng.init();
 
 
+
 var game = kng.Game( {  levels: [
             {
                 objects:[{
@@ -191,12 +192,13 @@ var game = kng.Game( {  levels: [
                         //model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
                     },
                     click: function(model, pluginData, $do, msg) {
-                        $do.killYourself().create('ball', {
+                        model(1).active = !model().active;
+                        /*$do.killYourself().create('ball', {
                                 x:_.random(0,400),
                                 y:_.random(0,370),
                                 vy:0,
                                 vx:0
-                            });;
+                            });;*/
                     },
                     collision: function(model, pluginData, doFollowing, msg) {
                         doFollowing.

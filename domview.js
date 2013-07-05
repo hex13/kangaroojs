@@ -94,6 +94,8 @@ function DOMView(element, pixelsPerUnit) {
         
         style.width = (model.w * ppu) + 'px'; //!!!doesn't should take w/h from images?
         style.height = (model.h * ppu) + 'px';
+        
+        style.display = model.active?'block':'none';
 
         if (model.dead) {
             style.backgroundColor = "rgba(" + _.random(50,100) +",0,0,0.7)";

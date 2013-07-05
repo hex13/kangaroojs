@@ -108,7 +108,7 @@ function Box2DPhysics() {
                 data.body.SetLinearVelocity(new b2Vec2(vx, vy)); // ...update box2d
             data.vsum = vsum;
 
-
+            data.body.SetActive(m.active);
         });
         
         
