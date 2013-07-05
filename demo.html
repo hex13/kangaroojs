@@ -139,9 +139,9 @@ kng.send = function(msg) {
 var physics = new SimplePhysics;
 
 
-var game = (function () {
+var game = (function (options) {
 
-
+    var levels = options.levels;
     
     var view;
     var minimap;
@@ -195,64 +195,6 @@ var game = (function () {
     function loadLevel() {
 
        
-        var levels = [
-            {
-                objects:[{
-                            name:'ball', 
-                            model: {
-                                x:450,y:200,vy:-1,vx:2,w:300,h:10,
-                                gravity:0,
-                                shape:'rect',
-                                rotation:0
-                            }
-                    },  {
-                            name:'ball', 
-                            model: {
-                                x:260,y:100,vy:-1,vx:0.5,h:300,w:10,
-                                gravity:0,
-                                shape:'rect',
-                                rotation:0
-                            }
-                    } ]
-            },
-
-            {
-                objects:[{
-                            name:'ball', 
-                            model: {
-                                x:450,y:200,vy:-1,vx:2,w:300,h:10,
-                                gravity:0,
-                                shape:'rect',
-                                rotation:0
-                            }
-                    },  {
-                            name:'ball', 
-                            model: {
-                                x:260,y:100,vy:-1,vx:0.5,h:300,w:10,
-                                gravity:0,
-                                shape:'rect',
-                                rotation:0
-                            }
-                    },
-                    
-
-                    {
-                            name:'ball', 
-                            model: {
-                                x:360,y:100,vy:-1,vx:0.5,h:300,w:10,
-                                gravity:0,
-                                shape:'rect',
-                                rotation:0
-                            }
-                    }                    
-                    
-                    
-                    
-                    ]
-            },
-            
-            
-        ]
         
         var level = levels[levelIndex];
     
@@ -321,7 +263,65 @@ var game = (function () {
         
     };
     
-})();
+})( {  levels: [
+            {
+                objects:[{
+                            name:'ball', 
+                            model: {
+                                x:450,y:200,vy:-1,vx:2,w:300,h:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  {
+                            name:'ball', 
+                            model: {
+                                x:260,y:100,vy:-1,vx:0.5,h:300,w:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    } ]
+            },
+
+            {
+                objects:[{
+                            name:'ball', 
+                            model: {
+                                x:450,y:200,vy:-1,vx:2,w:300,h:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  {
+                            name:'ball', 
+                            model: {
+                                x:260,y:100,vy:-1,vx:0.5,h:300,w:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },
+                    
+
+                    {
+                            name:'ball', 
+                            model: {
+                                x:360,y:100,vy:-1,vx:0.5,h:300,w:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    }                    
+                    
+                    
+                    
+                    ]
+            },
+            
+            
+        ]}
+);
 
 kng.loadImages({
         'ball':'images/1.png',
