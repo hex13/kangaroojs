@@ -24,15 +24,7 @@ function DOMView(element, pixelsPerUnit) {
             if (model) {
                 kng.send({to:model.obj, name:'click'});
             }
-            else {
-                kng.send({to:'scene', name:'create', e:e, obj: {
-                    name:'ball',
-                    model: {
-                            x:x, y:y
-                        }
-                    }
-                });
-            }        
+ 
         }
         if (e.type=='click') click();
        
