@@ -142,6 +142,7 @@ var physics = new SimplePhysics;
 function Game(options) {
 
     var levels = options.levels;
+    var types = options.types || [];
     
     var view;
     var minimap;
@@ -193,12 +194,7 @@ function Game(options) {
     
     
     function loadLevel() {
-
-       
-        
         var level = levels[levelIndex];
-    
-            
         com.send({to:'scene', name:'create', obj:level.objects});      
     }
     
@@ -219,32 +215,10 @@ function Game(options) {
         start: function () {
             timer && timer.stop();
             
-            kng.define('ball', {
-                events: {
-                    init: function(model) {
-                        //model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
-                    },
-                    click: function(model, pluginData, $do, msg) {
-                        $do.killYourself();
-                    },
-                    collision: function(model, pluginData, doFollowing, msg) {
-                        doFollowing.
-                            killYourself().
-                            points(1).                
-                            create('ball', {
-                                x:_.random(0,700),
-                                y:_.random(0,570),
-                                vy:2,
-                                vx:3
-                            });
-                    }, 
-                    move: function(model) {
-
-                    }
-                }
-            }, 'spr');           
-        
-        
+            types.forEach(function(t) {
+                kng.define.apply(kng, t);
+            });
+            
         
             initializeGame();    
             loadLevel();
@@ -323,7 +297,36 @@ var game = Game( {  levels: [
             },
             
             
-        ]}
+        ],
+        types: [['ball', 
+            {
+                events: {
+                    init: function(model) {
+                        //model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
+                    },
+                    click: function(model, pluginData, $do, msg) {
+                        alert('ball.click');//!!! why is it not triggering?
+                        $do.killYourself();
+                    },
+                    collision: function(model, pluginData, doFollowing, msg) {
+
+                        doFollowing.
+                            killYourself().
+                            points(1).                
+                            create('ball', {
+                                x:_.random(0,700),
+                                y:_.random(0,570),
+                                vy:2,
+                                vx:3
+                            });
+                    }, 
+                    move: function(model) {
+                    }
+                }
+            }, 'spr']]       
+        
+        
+        }
 );
 
 kng.loadImages({
