@@ -34,7 +34,7 @@ function DOMView(element, pixelsPerUnit) {
                 });
             }        
         }
-       // if (e.type=='click') click();
+        if (e.type=='click') click();
        
         if (e.type=='mousedown') {
             dragData = {start:mouseData};

@@ -191,19 +191,22 @@ var game = kng.Game( {  levels: [
                         //model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
                     },
                     click: function(model, pluginData, $do, msg) {
-                        alert('ball.click');//!!! why is it not triggering?
-                        $do.killYourself();
+                        $do.killYourself().create('ball', {
+                                x:_.random(0,400),
+                                y:_.random(0,370),
+                                vy:0,
+                                vx:0
+                            });;
                     },
                     collision: function(model, pluginData, doFollowing, msg) {
-
                         doFollowing.
                             killYourself().
                             points(1).                
                             create('ball', {
-                                x:_.random(0,700),
-                                y:_.random(0,570),
-                                vy:2,
-                                vx:3
+                                x:_.random(0,400),
+                                y:_.random(0,370),
+                                vy:0,
+                                vx:0
                             });
                     }, 
                     move: function(model) {
