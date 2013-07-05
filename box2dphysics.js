@@ -130,7 +130,10 @@ function Box2DPhysics() {
         // create body def        
         var bodyDef = new b2BodyDef;       
         var g = m.gravity;     
-        bodyDef.type = g == 0? b2Body.b2_cinematicBody : b2Body.b2_dynamicBody;        
+        if (m.static) {
+            bodyDef.type = b2Body.b2_staticBody 
+        } else
+            bodyDef.type = g == 0? b2Body.b2_cinematicBody : b2Body.b2_dynamicBody;        
         bodyDef.userData = data.model.obj;
 
 
