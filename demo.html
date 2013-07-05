@@ -123,23 +123,27 @@ function assert(cond, desc) {
 kng.init();
 
 
-var env = {};
-var com = new Messenger(function(id) {
-    if (_.isString(id))
-        return env[id];
-    return id;
-});
-kng.send = function(msg) {
-    com.send(msg);
-}
 
 
 
 
-var physics = new SimplePhysics;
+
+
 
 
 function Game(options) {
+    var env = {};
+    var com = new Messenger(function(id) {
+        if (_.isString(id))
+            return env[id];
+        return id;
+    });
+    kng.send = function(msg) {
+        com.send(msg);
+    }
+
+
+
 
     var levels = options.levels;
     var types = options.types || [];
@@ -149,6 +153,8 @@ function Game(options) {
     var timer;
     
     var levelIndex = 0;
+    
+    var physics = new SimplePhysics;    
 
     
     function initializeGame() {
