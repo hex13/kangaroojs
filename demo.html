@@ -125,22 +125,96 @@ function assert(cond, desc) {
 
 kng.init();
 
+var doors = {
+    active:false
+};
 
 
 var game = kng.Game( {  levels: [
             {
-                objects:[{
-                            name:'ball', 
+                objects:[
+                
+                    {
+                            name:'wall', 
                             model: {
-                                x:450,y:200,vy:-1,vx:2,w:300,h:10,
+                                x:300,y:100,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
                             }
-                    },  {
+                    },  
+                    
+                    {
+                            name:'wall', 
+                            model: {
+                                x:300,y:300,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  
+                    
+                    {
+                            name:'wall', 
+                            model: {
+                                x:500,y:100,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  
+                    
+                    {
+                            name:'wall', 
+                            model: {
+                                x:500,y:350,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  
+                    
+                    
+                    
+                
+                
+                    {
+                            name:'door', 
+                            model: {
+                                x:300,y:200,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  
+                    {
+                            name:'door', 
+                            model: {
+                                x:500,y:200,vy:0,vx:0,w:20,h:150,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  
+                    
+                    
+                    
+                    {
+                            name:'switch', 
+                            model: {
+                                x:300,y:10,vy:0,vx:0,w:100,h:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  
+                    
+                
+                
+                    {
                             name:'ball', 
                             model: {
-                                x:260,y:100,vy:-1,vx:0.5,h:300,w:10,
+                                x:450,y:200,vy:-1,vx:2,w:300,h:10,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -187,6 +261,9 @@ var game = kng.Game( {  levels: [
         ],
         types: [['ball', 
             {
+                model: {
+                    shape:'circle'
+                },
                 events: {
                     init: function(model) {
                         //model().color = ['red','green','blue','#fa0','#aaa'][_.random(5)];
@@ -214,15 +291,45 @@ var game = kng.Game( {  levels: [
                     move: function(model) {
                     }
                 }
-            }, 'spr']]       
+            }, 'spr'],
+            ['switch',{
+                events: {
+                    click: function(model){
+                        doors.active = !doors.active;
+                    }
+                }
+            }, 'spr'],
+            ['door',{
+                model: {
+                    static: true
+                },
+                events: {
+                    move: function(model){
+                        model(1).active = doors.active;
+                    }
+                }
+            }, 'spr'],
+            
+            ['wall',{
+                model: {
+                    static: true
+                },
+            }, 'spr']
+            
+            
+            ]       
         
         
         }
 );
 
 kng.loadImages({
-        'ball':'images/1.png',
+        'ball':'images/ball.png',
         'UnderscoreTemplate':'images/2.png',
+        'switch':'images/gears.png',
+        'wall':'images/wall-v.png',
+        'door':'images/door.png'
+        
 }).run(game.start);
 
 $(function() {
@@ -263,7 +370,7 @@ $(function() {
 <div id="minimap" style="background:#020;position:fixed;height:300px;width:300px;right:0px"></div>
 
 <div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>
-<div id="map" style="width:900px;height:600px;background:#6a3"></div>
+<div id="map" style="width:900px;height:600px;background:#332"></div>
 <canvas width=800 height=600 style="__display:none;margin-left:-3px;margin-top:14px;padding:0;background:#666;" id="canvas"></canvas>
 
 <script src="debug.js"></script>
