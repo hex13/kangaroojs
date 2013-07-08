@@ -15,15 +15,15 @@
   font-weight:bold;
   margin:0px;padding:0px;
   opacity:0.5;
-  border-left:3px solid black;
-  border-top:3px solid red;  
+  /*border-left:3px solid black;
+  border-top:3px solid red;  */
   backsground-image:url(images/cat-light.png);
 }
 
 .kang-spr {
   min-width:6px;
   min-height:6px;  
-  background-color:#cef;
+  /*background-color:#cef;*/
   
 }
 
