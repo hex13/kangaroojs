@@ -15,7 +15,7 @@ function Box2DPhysics() {
     
     var physics = new Container();
     
-    var world = new Box2D.Dynamics.b2World(new b2Vec2(0, 12), true);
+    var world = new Box2D.Dynamics.b2World(new b2Vec2(0, 10), true);
     
     
     
