@@ -49,7 +49,7 @@ kng.defineTypes = function(kng) {
                         this.send({name:'addObserver', observer:this.physics});                    
                     }
 
-                    this.color = ['red','green','blue','yellow','orange'][_.random(4)];//!!!!DEBUG
+                    //this.color = ['red','green','blue','yellow','orange'][_.random(4)];//!!!!DEBUG
                 },
                 
                 addObserver: function(model, plugin, aaa, msg) {
