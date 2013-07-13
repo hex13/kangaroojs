@@ -137,7 +137,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'wall', 
                             model: {
-                                x:300,y:100,vy:0,vx:0,w:20,h:100,
+                                x:300,y:20,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -147,7 +147,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'wall', 
                             model: {
-                                x:300,y:300,vy:0,vx:0,w:20,h:100,
+                                x:300,y:274,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -157,7 +157,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'wall', 
                             model: {
-                                x:500,y:100,vy:0,vx:0,w:20,h:100,
+                                x:500,y:20,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -167,7 +167,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'wall', 
                             model: {
-                                x:500,y:350,vy:0,vx:0,w:20,h:100,
+                                x:500,y:250,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -181,7 +181,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'door', 
                             model: {
-                                x:300,y:200,vy:0,vx:0,w:20,h:100,
+                                x:300,y:150,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -190,7 +190,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'door', 
                             model: {
-                                x:500,y:200,vy:0,vx:0,w:20,h:150,
+                                x:500,y:130,vy:0,vx:0,w:20,h:150,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -202,12 +202,23 @@ var game = kng.Game( {  levels: [
                     {
                             name:'switch', 
                             model: {
-                                x:300,y:10,vy:0,vx:0,w:100,h:10,
+                                x:295,y:118,vy:0,vx:0,w:100,h:10,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
                             }
                     },  
+                    
+                    {
+                            name:'switch', 
+                            model: {
+                                x:495,y:118,vy:0,vx:0,w:100,h:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  
+                    
                     
                 
                 
@@ -324,11 +335,11 @@ var game = kng.Game( {  levels: [
 );
 
 kng.loadImages({
-        'ball':'images/ball.png',
+        'ball':'images/switch-red.png',
         'UnderscoreTemplate':'images/2.png',
-        'switch':'images/gears.png',
-        'wall':'images/wall-v.png',
-        'door':'images/door.png'
+        'switch':'images/switch-blue.png',
+        'wall':'images/wood-v.png',
+        'door':'images/door-blue-v.png'
         
 }).run(game.start);
 
@@ -370,7 +381,7 @@ $(function() {
 <div id="minimap" style="background:#020;position:fixed;height:300px;width:300px;right:0px"></div>
 
 <div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>
-<div id="map" style="width:900px;height:600px;background:#332"></div>
+<div id="map" style="width:900px;height:600px;background:url('images/background-1.jpg')"></div>
 <canvas width=800 height=600 style="__display:none;margin-left:-3px;margin-top:14px;padding:0;background:#666;" id="canvas"></canvas>
 
 <script src="debug.js"></script>
