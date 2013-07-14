@@ -13,7 +13,7 @@ kng.Game = function(options) {
 
 
 
-
+    var timerCallback = options.interval && options.interval[0];
     var levels = options.levels;
     var types = options.types || [];
     
@@ -82,6 +82,10 @@ kng.Game = function(options) {
         com.dispatch();        
         view.render();
         minimap.render();
+        
+        if (Math.random() < 0.02) {
+            timerCallback && timerCallback(com);
+        }
     }
     
     
