@@ -133,6 +133,32 @@ var doors = {
 var game = kng.Game( {  levels: [
             {
                 objects:[
+
+
+                    {
+                            name:'tube', 
+                            model: {
+                                x:70,y:186,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:1,
+                                static:true
+                            }
+                    },  
+                
+                
+                    {
+                            name:'container', 
+                            model: {
+                                x:300,y:400,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },  
+                
+                
+                
                 
                     {
                             name:'wall', 
@@ -325,10 +351,30 @@ var game = kng.Game( {  levels: [
                 model: {
                     static: true
                 },
+            }, 'spr'],
+            
+            ['container', {
+                model: {
+                    static:true
+                }
+            }, 'spr'],
+            
+            ['tube', {
             }, 'spr']
             
-            
-            ]       
+                        
+            ],     
+        
+        interval: [function (com) {
+            com.send({to:'scene', name:'create', obj: {
+                name:'ball',
+                model: {
+                    vx:13, vy:-6, x:150, y:200
+                }
+               
+                
+            }});
+        }, 100]
         
         
         }
@@ -339,7 +385,9 @@ kng.loadImages({
         'UnderscoreTemplate':'images/2.png',
         'switch':'images/switch-blue.png',
         'wall':'images/wood-v.png',
-        'door':'images/door-blue-v.png'
+        'door':'images/door-blue-v.png',
+        'container':'images/container.png',
+        'tube':'images/tube.png'
         
 }).run(game.start);
 
@@ -378,7 +426,7 @@ $(function() {
 <button id="toggle">Toggle</button>
 <button id="restart">Restart</button>
 <button id="nextlevel">NextLevel</button>
-<div id="minimap" style="background:#020;position:fixed;height:300px;width:300px;right:0px"></div>
+<div id="minimap" style="display:none;background:#020;position:fixed;height:300px;width:300px;right:0px"></div>
 
 <div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>
 <div id="map" style="width:900px;height:600px;background:url('images/background-1.jpg')"></div>
