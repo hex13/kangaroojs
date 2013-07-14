@@ -135,6 +135,9 @@ function Box2DPhysics() {
         } else
             bodyDef.type = g == 0? b2Body.b2_cinematicBody : b2Body.b2_dynamicBody;        
         bodyDef.userData = data.model.obj;
+        
+        if (m.rotation)
+            bodyDef.angle = m.rotation;
 
 
         // create object' shape
