@@ -207,7 +207,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'door', 
                             model: {
-                                x:300,y:150,vy:0,vx:0,w:20,h:100,
+                                x:300,y:156,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -228,7 +228,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'switch', 
                             model: {
-                                x:295,y:118,vy:0,vx:0,w:100,h:10,
+                                x:290,y:118,vy:0,vx:0,w:100,h:10,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -238,7 +238,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'switch', 
                             model: {
-                                x:495,y:118,vy:0,vx:0,w:100,h:10,
+                                x:490,y:118,vy:0,vx:0,w:100,h:10,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -334,6 +334,8 @@ var game = kng.Game( {  levels: [
                     click: function(model){
                         doors.active = !doors.active;
                     }
+                }, model: {
+                    static: true
                 }
             }, 'spr'],
             ['door',{
@@ -383,9 +385,9 @@ var game = kng.Game( {  levels: [
 kng.loadImages({
         'ball':'images/switch-red.png',
         'UnderscoreTemplate':'images/2.png',
-        'switch':'images/switch-blue.png',
+        'switch':'images/switch.png',
         'wall':'images/wood-v.png',
-        'door':'images/door-blue-v.png',
+        'door':'images/door-blue-v.gif',
         'container':'images/container.png',
         'tube':'images/tube.png'
         
