@@ -29,8 +29,8 @@ function Box2DPhysics() {
         var objB = fixtureB.GetBody().GetUserData();
         if (!isEnd) {
            // console.log("AAAAAAAAAAAAA");
-            //objA.send({name:'collision'},kng.send);
-            //objB.send({name:'collision'},kng.send);        
+            objA.send({name:'collision', target:objB},kng.send);
+            objB.send({name:'collision', target:objA},kng.send);        
            // console.log("BBBB");            
         }
     }
