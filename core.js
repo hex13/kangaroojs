@@ -122,6 +122,13 @@ kng.Obj = function(attrs) {
             func({to:self, name:'kill'});
             return this;
         }
+        
+        $do.kill = function(target) {
+            func({to:target, name:'kill'});
+            return this;
+        }
+        
+        
         $do.points = function(amount) {
             func({to:'game', name:'points', points:amount});
             return this;
