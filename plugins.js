@@ -59,7 +59,8 @@ kng.ShapePlugin = function(shape) {
     return {
         events: {
             create: function(model, plugin, aaa, msg) {
-                msg.obj.model.shape = shape;
+                //!!!! warning: no-op behavior
+                //msg.obj.model.shape = shape;
             }
         }
     }    
