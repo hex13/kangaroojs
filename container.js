@@ -44,7 +44,7 @@ Container.prototype = {
     send: function(msg) {
         this.each(function(data) {
             var obj = data.model.obj;
-            obj.send(msg);
+            obj.send(msg, kng.send);
         });
     }
 };
