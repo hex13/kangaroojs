@@ -129,9 +129,28 @@ var doors = {
     active:false
 };
 
+//maybe it should be moved to the game module in someway?
+// maybe. maybe not.
+var gameState = {
+    ballsInContainer:0
+}
+
 
 var game = kng.Game( {  levels: [
             {
+                hudObjects: [
+                    {
+                        name:'UnderscoreTemplate',
+                        model: {
+                            template:'<%= gameState.ballsInContainer %>',
+                            gameState:gameState,
+                            x:100, y:100, text:'krur'
+                        },events: {
+                            msove: function() {
+                            }
+                        }
+                    }
+                ],
                 objects:[
 
 
@@ -299,7 +318,8 @@ var game = kng.Game( {  levels: [
         types: [['ball', 
             {
                 model: {
-                    shape:'circle'
+                    shape:'circle',
+                    lifespan:4000
                 },
                 events: {
                     init: function(model) {
@@ -315,7 +335,7 @@ var game = kng.Game( {  levels: [
                             });;*/
                     },
                     collision: function(model, pluginData, doFollowing, msg) {
-                        doFollowing.
+                        /*doFollowing.
                             killYourself().
                             points(1).                
                             create('ball', {
@@ -323,7 +343,7 @@ var game = kng.Game( {  levels: [
                                 y:_.random(0,370),
                                 vy:0,
                                 vx:0
-                            });
+                            });*/
                     }, 
                     move: function(model) {
                     }
@@ -358,6 +378,11 @@ var game = kng.Game( {  levels: [
             ['container', {
                 model: {
                     static:true
+                }, events: {
+                    collision: function (model, pluginData, $do, msg) {                   
+                        $do.kill(msg.target);
+                        gameState.ballsInContainer++;
+                    }
                 }
             }, 'spr'],
             
@@ -368,6 +393,7 @@ var game = kng.Game( {  levels: [
             ],     
         
         interval: [function (com) {
+            document.title = gameState.ballsInContainer;
             com.send({to:'scene', name:'create', obj: {
                 name:'ball',
                 model: {
@@ -382,9 +408,10 @@ var game = kng.Game( {  levels: [
         }
 );
 
+
 kng.loadImages({
         'ball':'images/switch-red.png',
-        'UnderscoreTemplate':'images/2.png',
+        //'UnderscoreTemplate':'images/2.png',
         'switch':'images/switch.png',
         'wall':'images/wood-v.png',
         'door':'images/door-blue-v.gif',
@@ -428,7 +455,7 @@ $(function() {
 <button id="toggle">Toggle</button>
 <button id="restart">Restart</button>
 <button id="nextlevel">NextLevel</button>
-<div id="minimap" style="display:none;background:#020;position:fixed;height:300px;width:300px;right:0px"></div>
+<div id="minimap" style="background:#020;position:fixed;height:300px;width:300px;right:0px"></div>
 
 <div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>
 <div id="map" style="width:900px;height:600px;background:url('images/background-1.jpg')"></div>
