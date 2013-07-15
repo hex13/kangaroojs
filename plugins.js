@@ -54,6 +54,19 @@ kng.TargetPlugin = {
     }
 };
 
+kng.LifeSpanPlugin = {
+    events: {
+        move: function(model, pluginData, $do) {
+            var m = model();
+            if (!m.lifespan)
+                return;
+            
+            if (new Date() - m.birth > m.lifespan) 
+                $do.killYourself();     
+        }
+    }
+}
+
 // to use with scene object
 kng.ShapePlugin = function(shape) {
     return {

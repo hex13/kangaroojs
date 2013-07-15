@@ -92,6 +92,7 @@ kng.Obj = function(attrs) {
     this.options = this.options || {};    
     if (!this.options.linkModel) //!!!TODO: test this feature
         this.model = kng.createModel(this.model, this);
+    this.model(0).birth = this.model(1).birth = +new Date();
 
     this.$do = function(func) {
         var $do = function(msg) {
