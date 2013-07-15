@@ -42,7 +42,8 @@ kng.Game = function(options) {
         });
         env.hud = kng.create('scene', { 
             model: {
-                physics: new SimplePhysics
+                physics: new SimplePhysics,
+                pixelsPerUnit:1
             }, plugins: [
                 kng.ShapePlugin('circle')
             ]
@@ -71,6 +72,8 @@ kng.Game = function(options) {
     function loadLevel() {
         var level = levels[levelIndex];
         com.send({to:'scene', name:'create', obj:level.objects});      
+        
+        com.send({to:'hud', name:'create', obj:level.hudObjects});      
     }
     
   
@@ -83,7 +86,7 @@ kng.Game = function(options) {
         view.render();
         minimap.render();
         
-        if (Math.random() < 0.02) {
+        if (Math.random() < 0.06) {
             timerCallback && timerCallback(com);
         }
     }
