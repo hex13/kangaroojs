@@ -56,6 +56,10 @@ kng.Game = function(options) {
             events: {
                 points: function(model, plugin, aaa, msg) {
                     model().points += msg.points;
+                },
+                    
+                nextLevel: function () {
+                    game.nextLevel();
                 }
             }
         });
@@ -93,7 +97,7 @@ kng.Game = function(options) {
     
     
 
-    return {
+    var game = {
         start: function () {
             timer && timer.stop();
             
@@ -118,5 +122,5 @@ kng.Game = function(options) {
         }
         
     };
-    
+    return game;
 };

@@ -135,6 +135,11 @@ kng.Obj = function(attrs) {
             return this;
         }
         
+        $do.nextLevel = function() {
+            func({to:'game', name:'nextLevel'});
+            return this;
+        }
+        
         
         return $do;
     }
