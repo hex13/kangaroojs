@@ -69,12 +69,16 @@ kng.Game = function(options) {
         env.scene.send({name:'addObserver', observer:minimap});    
         
         env.hud.send({name:'addObserver', observer:view});      
+        
+        
     }
     
     
     
     function loadLevel() {
         var level = levels[levelIndex];
+        if (level.background)
+            $("#map").css('background', 'url("' + level.background + '")');
         com.send({to:'scene', name:'create', obj:level.objects});      
         
         com.send({to:'hud', name:'create', obj:level.hudObjects});      
