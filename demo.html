@@ -126,7 +126,12 @@ function assert(cond, desc) {
 kng.init();
 
 var doors = {
-    active:false
+    blue: {
+        active: false
+    },
+    green: {
+        active: false
+    }
 };
 
 //maybe it should be moved to the game module in someway?
@@ -138,6 +143,7 @@ var gameState = {
 
 var game = kng.Game( {  levels: [
             {
+                background: 'images/background-2.jpg',
                 hudObjects: [
                     {
                         name:'UnderscoreTemplate',
@@ -245,7 +251,7 @@ var game = kng.Game( {  levels: [
                     
                     
                     {
-                            name:'switch', 
+                            name:'switch-blue', 
                             model: {
                                 x:290,y:118,vy:0,vx:0,w:100,h:10,
                                 gravity:0,
@@ -255,7 +261,7 @@ var game = kng.Game( {  levels: [
                     },  
                     
                     {
-                            name:'switch', 
+                            name:'switch-blue', 
                             model: {
                                 x:490,y:118,vy:0,vx:0,w:100,h:10,
                                 gravity:0,
@@ -279,6 +285,8 @@ var game = kng.Game( {  levels: [
             },
 
             {
+                background: 'images/background-3.jpg',
+            
                 objects:[
 
                 
@@ -295,7 +303,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'wall', 
                             model: {
-                                x:300,y:274,vy:0,vx:0,w:20,h:100,
+                                x:300,y:74,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -305,7 +313,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'wall-h', 
                             model: {
-                                x:350,y:274,vy:0,vx:0,w:20,h:100,
+                                x:314,y:280,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -345,23 +353,33 @@ var game = kng.Game( {  levels: [
 
                     
                     {
-                            name:'door-h', 
+                            name:'door-green-h', 
                             model: {
-                                x:300,y:156,vy:0,vx:0,w:20,h:100,
+                                x:416,y:280,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
                             }
                     },      
                     {
-                            name:'switch', 
+                            name:'switch-blue', 
                             model: {
                                 x:490,y:118,vy:0,vx:0,w:100,h:10,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
                             }
-                    },                      
+                    },     
+
+                    {
+                            name:'switch-green', 
+                            model: {
+                                x:520,y:268,vy:0,vx:0,w:100,h:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },                         
                     
                     
                     
@@ -404,37 +422,65 @@ var game = kng.Game( {  levels: [
                     }
                 }
             }, 'spr'],
+            
             ['switch',{
                 events: {
                     click: function(model){
-                        doors.active = !doors.active;
+                        var color = model().switchColor;
+                        doors[color].active = !doors[color].active;
                     }
                 }, model: {
-                    static: true
+                    static: true,
                 }
             }, 'spr'],
+            
+            ['switch-blue', {
+                model: {
+                    switchColor: 'blue'                    
+                }
+            }, 'switch'],
+            
+            ['switch-green', {
+                model: {
+                    switchColor: 'green'                    
+                }
+            }, 'switch'],
+            
+            
             ['door',{
                 model: {
-                    static: true
+                    static: true,
+                    switchColor:'blue'
                 },
                 events: {
                     move: function(model){
-                        model(1).active = doors.active;
+                        var color = model().switchColor;
+                        model(1).active = doors[color].active;
                     }
                 }
             }, 'spr'],
             
-            //!!!breaking DRY: it should derive from generic door
-            ['door-h',{
+            ['door-blue', {
+            }, 'door'],
+            
+            ['door-blue-h',{
+            }, 'door-blue'],            
+            
+            ['door-green', {
                 model: {
-                    static: true
-                },
-                events: {
-                    move: function(model){
-                        model(1).active = doors.active;
-                    }
+                    switchColor: 'green'
                 }
-            }, 'spr'],            
+            }, 'door'],
+            
+            ['door-green-v', {
+            }, 'door-green'],
+            
+            ['door-green-h', {
+            }, 'door-green'],
+            
+            
+            
+            
             
             
             
@@ -491,11 +537,14 @@ var game = kng.Game( {  levels: [
 kng.loadImages({
         'ball':'images/switch-red.png',
         //'UnderscoreTemplate':'images/2.png',
-        'switch':'images/switch-green.png',
+        'switch-blue':'images/switch.png',
+        'switch-green':'images/switch-green.png',
         'wall':'images/wood-v.png',
         'wall-h':'images/wood-h.png',
-        'door':'images/door-green-v.gif',
-        'door-h':'images/door-blue-h.gif',
+        'door':'images/door-blue-v.gif',
+        'door-blue-h':'images/door-blue-h.gif',
+        'door-green-h':'images/door-green-h.gif',
+        'door-green-v':'images/door-green-v.gif',
         'container':'images/container.png',
         'tube':'images/tube.png'
         
