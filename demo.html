@@ -279,7 +279,43 @@ var game = kng.Game( {  levels: [
             },
 
             {
-                objects:[{
+                objects:[
+
+                
+                    {
+                            name:'container', 
+                            model: {
+                                x:400,y:400,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },                  
+
+                    {
+                            name:'wall', 
+                            model: {
+                                x:300,y:274,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },
+                    
+                    {
+                            name:'wall-h', 
+                            model: {
+                                x:350,y:274,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },                    
+
+
+                
+                
+                    {
                             name:'ball', 
                             model: {
                                 x:450,y:200,vy:-1,vx:2,w:300,h:10,
@@ -297,16 +333,35 @@ var game = kng.Game( {  levels: [
                             }
                     },
                     
-
                     {
-                            name:'ball', 
+                            name:'door', 
                             model: {
-                                x:360,y:100,vy:-1,vx:0.5,h:300,w:10,
+                                x:200,y:156,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
                             }
-                    }                    
+                    },      
+
+                    
+                    {
+                            name:'door-h', 
+                            model: {
+                                x:300,y:156,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },      
+                    {
+                            name:'switch', 
+                            model: {
+                                x:490,y:118,vy:0,vx:0,w:100,h:10,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0
+                            }
+                    },                      
                     
                     
                     
@@ -319,7 +374,7 @@ var game = kng.Game( {  levels: [
             {
                 model: {
                     shape:'circle',
-                    lifespan:4000
+                    lifespan:7000
                 },
                 events: {
                     init: function(model) {
@@ -369,11 +424,33 @@ var game = kng.Game( {  levels: [
                 }
             }, 'spr'],
             
+            //!!!breaking DRY: it should derive from generic door
+            ['door-h',{
+                model: {
+                    static: true
+                },
+                events: {
+                    move: function(model){
+                        model(1).active = doors.active;
+                    }
+                }
+            }, 'spr'],            
+            
+            
+            
+            
             ['wall',{
                 model: {
                     static: true
                 },
             }, 'spr'],
+            
+            ['wall-h',{
+                model: {
+                    static: true
+                },
+            }, 'spr'],
+            
             
             ['container', {
                 model: {
@@ -382,6 +459,8 @@ var game = kng.Game( {  levels: [
                     collision: function (model, pluginData, $do, msg) {                   
                         $do.kill(msg.target);
                         gameState.ballsInContainer++;
+                        if (gameState.ballsInContainer > 2)
+                            $do.nextLevel();
                     }
                 }
             }, 'spr'],
@@ -412,9 +491,11 @@ var game = kng.Game( {  levels: [
 kng.loadImages({
         'ball':'images/switch-red.png',
         //'UnderscoreTemplate':'images/2.png',
-        'switch':'images/switch.png',
+        'switch':'images/switch-green.png',
         'wall':'images/wood-v.png',
-        'door':'images/door-blue-v.gif',
+        'wall-h':'images/wood-h.png',
+        'door':'images/door-green-v.gif',
+        'door-h':'images/door-blue-h.gif',
         'container':'images/container.png',
         'tube':'images/tube.png'
         
@@ -455,7 +536,7 @@ $(function() {
 <button id="toggle">Toggle</button>
 <button id="restart">Restart</button>
 <button id="nextlevel">NextLevel</button>
-<div id="minimap" style="background:#020;position:fixed;height:300px;width:300px;right:0px"></div>
+<div id="minimap" style="background:#020;position:fixed;height:300px;width:100px;right:0px"></div>
 
 <div style="left:200px;top:200px;width:10px;height:2px;background:red;z-index:10;position:absolute;"></div>
 <div id="map" style="width:900px;height:600px;background:url('images/background-1.jpg')"></div>
