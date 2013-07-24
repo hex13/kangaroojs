@@ -286,14 +286,26 @@ var game = kng.Game( {  levels: [
 
             {
                 background: 'images/background-3.jpg',
-            
+                hudObjects: [
+                    {
+                        name:'UnderscoreTemplate',
+                        model: {
+                            template:'<%= gameState.ballsInContainer %>',
+                            gameState:gameState,
+                            x:100, y:100, text:'krur'
+                        },events: {
+                            msove: function() {
+                            }
+                        }
+                    }
+                ],            
                 objects:[
 
                 
                     {
                             name:'container', 
                             model: {
-                                x:400,y:400,vy:0,vx:0,w:20,h:100,
+                                x:460,y:410,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -301,24 +313,49 @@ var game = kng.Game( {  levels: [
                     },                  
 
                     {
-                            name:'wall', 
+                            name:'door-green-v', 
                             model: {
-                                x:300,y:74,vy:0,vx:0,w:20,h:100,
+                                x:300,y:120,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
-                                rotation:0
+                                rotation:0.1
                             }
                     },
                     
+             
+                    
+                    
                     {
-                            name:'wall-h', 
+                            name:'door-blue-h', 
                             model: {
-                                x:314,y:280,vy:0,vx:0,w:20,h:100,
+                                x:270,y:334,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0.6
+                            }
+                    },                    
+                    
+                    
+                    {
+                            name:'door-green-h', 
+                            model: {
+                                x:360,y:390,vy:0,vx:0,w:20,h:100,
+                                gravity:0,
+                                shape:'rect',
+                                rotation:0.6
+                            }
+                    },                    
+                    
+                    {
+                            name:'wall', 
+                            model: {
+                                x:530,y:170,vy:0,vx:0,w:20,h:100,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
                             }
                     },                    
+                    
 
 
                 
@@ -352,7 +389,7 @@ var game = kng.Game( {  levels: [
                     },      
 
                     
-                    {
+/*                    {
                             name:'door-green-h', 
                             model: {
                                 x:416,y:280,vy:0,vx:0,w:20,h:100,
@@ -360,11 +397,14 @@ var game = kng.Game( {  levels: [
                                 shape:'rect',
                                 rotation:0
                             }
-                    },      
+                    },      */
+                    
+
+                    
                     {
                             name:'switch-blue', 
                             model: {
-                                x:490,y:118,vy:0,vx:0,w:100,h:10,
+                                x:450,y:100,vy:0,vx:0,w:100,h:10,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -374,7 +414,7 @@ var game = kng.Game( {  levels: [
                     {
                             name:'switch-green', 
                             model: {
-                                x:520,y:268,vy:0,vx:0,w:100,h:10,
+                                x:500,y:100,vy:0,vx:0,w:100,h:10,
                                 gravity:0,
                                 shape:'rect',
                                 rotation:0
@@ -505,7 +545,7 @@ var game = kng.Game( {  levels: [
                     collision: function (model, pluginData, $do, msg) {                   
                         $do.kill(msg.target);
                         gameState.ballsInContainer++;
-                        if (gameState.ballsInContainer > 2)
+                        if (gameState.ballsInContainer > 5)
                             $do.nextLevel();
                     }
                 }
